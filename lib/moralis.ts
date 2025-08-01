@@ -57,11 +57,32 @@ export const getWalletTokenBalances = async (
     const response = await Moralis.EvmApi.wallets.getWalletTokenBalancesPrice({
       chain: chain,
       tokenAddresses: tokenAddresses,
-      address: address,
-      include: 'percent_change' // Include price change data
+      address: address
     });
 
-    return response.raw as WalletTokenResponse;
+    // Get the actual response data and cast to any to handle type mismatches
+    const responseData = response.raw() as any;
+    
+    // Map the Moralis response to our custom interface
+    const mappedResponse: WalletTokenResponse = {
+      address: responseData.address || address, // Fallback to input address if not in response
+      token_balances: (responseData.token_balances || []).map((token: any) => ({
+        token_address: token.token_address,
+        name: token.name,
+        symbol: token.symbol,
+        logo: token.logo,
+        thumbnail: token.thumbnail,
+        decimals: token.decimals,
+        balance: token.balance,
+        usd_price: token.usd_price,
+        usd_value: token.usd_value,
+        possible_spam: token.possible_spam,
+        verified_contract: token.verified_contract
+      })),
+      total_usd_value: responseData.total_usd_value
+    };
+
+    return mappedResponse;
   } catch (error) {
     console.error('Error fetching wallet token balances:', error);
     
