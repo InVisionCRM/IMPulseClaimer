@@ -7,21 +7,16 @@ export default defineConfig(({ mode }) => {
       define: {
         'process.env.API_KEY': JSON.stringify(env.GEMINI_API_KEY),
         'process.env.GEMINI_API_KEY': JSON.stringify(env.GEMINI_API_KEY),
-        'process.env.MORALIS_API_KEY': JSON.stringify(env.MORALIS_API_KEY),
-        global: 'globalThis',
-        'process.env.NODE_ENV': JSON.stringify(mode),
+        'process.env.MORALIS_API_KEY': JSON.stringify(env.MORALIS_API_KEY)
       },
       resolve: {
         alias: {
           '@': path.resolve(__dirname, '.'),
-          'assert': 'assert',
-          'stream': 'stream-browserify',
-          'buffer': 'buffer',
-          'util': 'util',
         }
       },
       build: {
         rollupOptions: {
+          external: ['assert', 'stream'],
           output: {
             manualChunks: {
               vendor: ['react', 'react-dom'],
@@ -35,12 +30,7 @@ export default defineConfig(({ mode }) => {
         minify: 'esbuild'
       },
       optimizeDeps: {
-        include: ['react', 'react-dom', '@web3modal/ethers'],
-        esbuildOptions: {
-          define: {
-            global: 'globalThis'
-          }
-        }
+        include: ['react', 'react-dom', '@web3modal/ethers']
       }
     };
 });

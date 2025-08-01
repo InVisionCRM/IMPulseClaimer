@@ -13,8 +13,6 @@ import { debugWeb3Modal } from './lib/web3modal';
 import { initializeMoralis, getTimeTokenBalance, formatTokenBalance, formatUSDValue, TokenBalance, isMoralisInitialized, isValidChain } from './lib/moralis';
 
 const App: React.FC = () => {
-  console.log('App component initialized');
-  
   const [isErrorModalOpen, setIsErrorModalOpen] = useState<boolean>(false);
   const [modalMessage, setModalMessage] = useState<string>('');
   const [activeView, setActiveView] = useState<string>('network');
@@ -22,28 +20,10 @@ const App: React.FC = () => {
   const [isLoadingBalance, setIsLoadingBalance] = useState<boolean>(false);
   const [isLoadingDividends, setIsLoadingDividends] = useState<boolean>(false);
 
-  // Web3Modal hooks - with error handling
-  let open: any;
-  let address: any;
-  let chainId: any;
-  let isConnected: any;
-  let switchNetwork: any;
-  
-  try {
-    const web3ModalResult = useWeb3Modal();
-    const web3ModalAccountResult = useWeb3ModalAccount();
-    const switchNetworkResult = useSwitchNetwork();
-    
-    open = web3ModalResult.open;
-    address = web3ModalAccountResult.address;
-    chainId = web3ModalAccountResult.chainId;
-    isConnected = web3ModalAccountResult.isConnected;
-    switchNetwork = switchNetworkResult.switchNetwork;
-    
-    console.log('Web3Modal hooks loaded successfully');
-  } catch (error) {
-    console.error('Error loading Web3Modal hooks:', error);
-  }
+  // Web3Modal hooks
+  const { open } = useWeb3Modal();
+  const { address, chainId, isConnected } = useWeb3ModalAccount();
+  const { switchNetwork } = useSwitchNetwork();
 
   const initialNetwork = networks.find(n => n.config.chainId === 1) || networks[0];
   const [currentNetwork, setCurrentNetwork] = useState<Network>(initialNetwork);
@@ -214,26 +194,51 @@ const App: React.FC = () => {
   const dividendDisplay = getDividendDisplay();
   const NetworkIcon = currentNetwork.icon;
   
-  console.log('App component rendering, activeView:', activeView);
-  
   return (
     <div className="flex min-h-screen font-sans bg-[#131313] text-white">
-      <div className="w-full p-8">
-        <h1 className="text-3xl font-bold text-white mb-4">TIME Dividends Claim</h1>
-        <p className="text-gray-300 mb-4">App component is loading...</p>
-        <div className="bg-[#1C1C1C] p-6 rounded-lg">
-          <h2 className="text-xl font-semibold text-white mb-2">Debug Info:</h2>
-          <p className="text-gray-300">Active View: {activeView}</p>
-          <p className="text-gray-300">Current Network: {currentNetwork.name}</p>
-          <p className="text-gray-300">Connected: {isConnected ? 'Yes' : 'No'}</p>
-          <button 
-            onClick={() => setActiveView(activeView === 'network' ? 'dividends' : 'network')}
-            className="bg-amber-500 hover:bg-amber-600 text-black font-bold py-2 px-4 rounded mt-4"
-          >
-            Toggle View
-          </button>
-        </div>
-      </div>
+      <Sidebar activeView={activeView} onNavigate={setActiveView} />
+      <main className="flex-1 p-4 sm:p-6 lg:p-8 flex justify-center items-start">
+        {activeView === 'network' && <Networks onConfirm={handleNetworkSelection} currentNetworkId={currentNetwork.id} />}
+        {activeView === 'dividends' && (
+          <div className="w-full max-w-4xl">
+            <Header network={currentNetwork} />
+            <div className="mt-6">
+              <AccountCard address={address} />
+            </div>
+            <div className="mt-8 grid grid-cols-1 md:grid-cols-2 gap-8 text-center">
+              <BalanceDisplay
+                title="TIME Balance"
+                amount={timeBalanceDisplay.amount}
+                value={timeBalanceDisplay.value}
+                icon={<TimeIcon />}
+                tooltipText="This is your current balance of TIME tokens."
+                isLoading={isLoadingBalance}
+              />
+              <BalanceDisplay
+                title="Available to Claim"
+                amount={dividendDisplay.amount}
+                value={dividendDisplay.value}
+                icon={<NetworkIcon size={32} />}
+                tooltipText={`This is the total amount of ${currentNetwork.config.symbol} dividends you can claim right now.`}
+                isLoading={isLoadingDividends}
+              />
+            </div>
+            <div className="mt-8">
+              <DividendsCard
+                onClaim={() => handleAttempt('Claim')}
+                onSweep={() => handleAttempt('Sweep')}
+                network={currentNetwork}
+                isLoading={isLoadingDividends}
+              />
+            </div>
+            <div className="text-center mt-8">
+              <a href="#" className="text-amber-400 hover:text-amber-500 transition-colors">
+                What is TIME? <span className="underline">Learn More Here</span>
+              </a>
+            </div>
+          </div>
+        )}
+      </main>
       <Modal isOpen={isErrorModalOpen} onClose={() => setIsErrorModalOpen(false)}>
         <p className="text-white text-lg sm:text-xl text-center p-4">
           {modalMessage}
