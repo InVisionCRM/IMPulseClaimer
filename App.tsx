@@ -1,5 +1,5 @@
 import React, { useState, useEffect } from 'react';
-import { useWeb3Modal, useWeb3ModalAccount } from '@web3modal/ethers/react';
+import { useWeb3Modal, useWeb3ModalAccount, useSwitchNetwork } from '@web3modal/ethers/react';
 import Sidebar from './components/Sidebar';
 import Header from './components/Header';
 import AccountCard from './components/AccountCard';
@@ -9,7 +9,7 @@ import Modal from './components/Modal';
 import Networks from './components/Networks';
 import { TimeIcon } from './components/icons/CurrencyIcons';
 import { networks, Network } from './data/networks';
-import { web3modal, debugWeb3Modal } from './lib/web3modal';
+import { debugWeb3Modal } from './lib/web3modal';
 import { initializeMoralis, getTimeTokenBalance, formatTokenBalance, formatUSDValue, TokenBalance, isMoralisInitialized, isValidChain } from './lib/moralis';
 
 const App: React.FC = () => {
@@ -23,6 +23,7 @@ const App: React.FC = () => {
   // Web3Modal hooks
   const { open } = useWeb3Modal();
   const { address, chainId, isConnected } = useWeb3ModalAccount();
+  const { switchNetwork } = useSwitchNetwork();
 
   const initialNetwork = networks.find(n => n.config.chainId === 1) || networks[0];
   const [currentNetwork, setCurrentNetwork] = useState<Network>(initialNetwork);
@@ -139,10 +140,10 @@ const App: React.FC = () => {
       }
     }
     
-    try {
+        try {
       // Switch network using Web3Modal
       console.log(`Switching to network: ${selectedNetwork.name} (Chain ID: ${selectedNetwork.config.chainId})`);
-      await web3modal.switchNetwork(selectedNetwork.config.chainId);
+      await switchNetwork(selectedNetwork.config.chainId);
       setActiveView('dividends');
     } catch (error) {
       console.error('Failed to switch network:', error);

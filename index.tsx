@@ -3,8 +3,8 @@ import React from 'react';
 import ReactDOM from 'react-dom/client';
 import './index.css';
 import App from './App';
-import { Web3Modal } from '@web3modal/ethers/react';
-import { web3modal } from './lib/web3modal';
+// Import web3modal configuration - the modal is automatically rendered
+import './lib/web3modal';
 
 const rootElement = document.getElementById('root');
 if (!rootElement) {
@@ -15,6 +15,5 @@ const root = ReactDOM.createRoot(rootElement);
 root.render(
   <React.StrictMode>
     <App />
-    <Web3Modal config={web3modal} />
   </React.StrictMode>
 );
