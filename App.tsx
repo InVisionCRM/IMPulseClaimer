@@ -13,6 +13,8 @@ import { debugWeb3Modal } from './lib/web3modal';
 import { initializeMoralis, getTimeTokenBalance, formatTokenBalance, formatUSDValue, TokenBalance, isMoralisInitialized, isValidChain } from './lib/moralis';
 
 const App: React.FC = () => {
+  console.log('App component initialized');
+  
   const [isErrorModalOpen, setIsErrorModalOpen] = useState<boolean>(false);
   const [modalMessage, setModalMessage] = useState<string>('');
   const [activeView, setActiveView] = useState<string>('network');
@@ -193,6 +195,8 @@ const App: React.FC = () => {
   const timeBalanceDisplay = getTimeBalanceDisplay();
   const dividendDisplay = getDividendDisplay();
   const NetworkIcon = currentNetwork.icon;
+  
+  console.log('App component rendering, activeView:', activeView);
   
   return (
     <div className="flex min-h-screen font-sans bg-[#131313] text-white">
