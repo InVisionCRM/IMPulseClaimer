@@ -1,12 +1,12 @@
 
-import React from 'react';
+import React from 'react'
 import {
   NetworkIcon,
   WalletIcon,
   DividendsIcon,
   SettingsIcon,
   ExpandIcon,
-} from './icons/NavIcons';
+} from './icons/NavIcons'
 
 interface SidebarItemProps {
   icon: React.ReactNode;
@@ -83,4 +83,4 @@ const Sidebar: React.FC<SidebarProps> = ({ activeView, onNavigate }) => {
   );
 };
 
-export default Sidebar;
+export default Sidebar

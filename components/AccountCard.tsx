@@ -1,4 +1,4 @@
-import React from 'react';
+import React from 'react'
 
 interface AccountCardProps {
   address?: string;
@@ -31,4 +31,4 @@ const AccountCard: React.FC<AccountCardProps> = ({ address }) => {
   );
 };
 
-export default AccountCard; 
+export default AccountCard 

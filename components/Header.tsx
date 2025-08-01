@@ -1,5 +1,5 @@
-import React from 'react';
-import { Network } from '../data/networks';
+import React from 'react'
+import { Network } from '@/data/networks'
 
 interface HeaderProps {
   network: Network;
@@ -27,4 +27,4 @@ const Header: React.FC<HeaderProps> = ({ network }) => {
   );
 };
 
-export default Header; 
+export default Header 

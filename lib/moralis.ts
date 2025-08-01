@@ -1,4 +1,4 @@
-import Moralis from 'moralis';
+import Moralis from 'moralis'
 
 // Initialize Moralis with API key
 export const initializeMoralis = async (apiKey: string) => {

@@ -1,57 +1,34 @@
-# TIME Dividends Claim
+# TIME Dividends Claim - Next.js
 
-A modern web application that allows holders of the Internet Money TIME cryptocurrency token to view and claim their Pulse Rewards across multiple blockchain networks.
+A Next.js application for claiming TIME token dividends across multiple blockchain networks.
 
-## 🚀 Features
+## Features
 
-- **Multi-Network Support**: Claim dividends on Ethereum, PulseChain, BNB Chain, Polygon, Arbitrum, Avalanche, and Base
-- **Web3 Integration**: Seamless wallet connection using Web3Modal
-- **Real-time Balance Display**: View TIME token balance and claimable dividends
-- **Network Switching**: Easy network selection with automatic wallet switching
-- **Responsive Design**: Modern, mobile-friendly interface with dark theme
-- **Accessibility**: WCAG compliant with proper ARIA labels and keyboard navigation
+- **Multi-Network Support**: Ethereum, PulseChain, BNB Chain, Polygon, Arbitrum, Avalanche, and Base
+- **Web3 Wallet Integration**: Connect with MetaMask, WalletConnect, and other popular wallets
+- **Real-time Balance Tracking**: View TIME token balances and USD values
+- **Dividend Management**: Claim and sweep dividend functionality (coming soon)
+- **Responsive Design**: Modern UI optimized for desktop and mobile
+- **TypeScript**: Full type safety throughout the application
 
-## 🏗️ Architecture
+## Tech Stack
 
-### Tech Stack
-- **Frontend**: React 19.1.0 with TypeScript
-- **Build Tool**: Vite 6.2.0
-- **Web3**: Web3Modal with Ethers.js
-- **Blockchain Data**: Moralis API for token balances
-- **Styling**: Tailwind CSS with custom dark theme and animations
-- **Icons**: Custom SVG icons for networks and UI elements
+- **Framework**: Next.js 14 with App Router
+- **Language**: TypeScript
+- **Styling**: Tailwind CSS
+- **Web3**: Reown AppKit with Wagmi and Viem
+- **Blockchain Data**: Moralis API
+- **Code Quality**: Biome for formatting and linting
+- **Testing**: Jest with React Testing Library
 
-### Project Structure
-```
-time-dividends-claim/
-├── components/          # React components
-│   ├── icons/          # SVG icons for networks and UI
-│   ├── AccountCard.tsx # User account display
-│   ├── BalanceDisplay.tsx # Balance and value display
-│   ├── DividendsCard.tsx # Main dividends interface
-│   ├── Header.tsx      # Network header
-│   ├── Modal.tsx       # Modal dialogs
-│   ├── Networks.tsx    # Network selection
-│   ├── Sidebar.tsx     # Navigation sidebar
-│   └── Tooltip.tsx     # Tooltip component
-├── data/
-│   └── networks.ts     # Network configurations
-├── lib/
-│   ├── web3modal.ts    # Web3Modal configuration
-│   └── moralis.ts      # Moralis API integration
-├── App.tsx             # Main application component
-├── index.tsx           # Application entry point
-├── index.css           # Global styles and Tailwind CSS
-├── tailwind.config.js  # Tailwind CSS configuration
-└── vite.config.ts      # Vite configuration
-```
-
-## 🚀 Getting Started
+## Getting Started
 
 ### Prerequisites
+
 - Node.js 18+ 
 - npm or yarn
-- Web3 wallet (MetaMask, WalletConnect, etc.)
+- Moralis API key
+- WalletConnect Project ID (for AppKit)
 
 ### Installation
 
@@ -66,238 +43,182 @@ time-dividends-claim/
    npm install
    ```
 
-3. **Environment Setup**
+3. **Set up environment variables**
    Create a `.env.local` file in the root directory:
    ```env
-   # Moralis API Key for blockchain data
-   # Get your API key from https://admin.moralis.io/
-   MORALIS_API_KEY=your_moralis_api_key_here
+   # Moralis API Key - Get from https://admin.moralis.io/
+   NEXT_PUBLIC_MORALIS_API_KEY=your_moralis_api_key_here
    
-   # Gemini API Key (if needed for other features)
-   GEMINI_API_KEY=your_gemini_api_key_here
+   # WalletConnect Project ID - Get from https://cloud.walletconnect.com/
+   NEXT_PUBLIC_PROJECT_ID=your_project_id_here
    ```
 
-4. **Start development server**
+4. **Run the development server**
    ```bash
    npm run dev
    ```
 
 5. **Open your browser**
-   Navigate to `http://localhost:5173`
+   Navigate to [http://localhost:3000](http://localhost:3000)
+
+## Available Scripts
+
+- `npm run dev` - Start development server
+- `npm run build` - Build for production
+- `npm run start` - Start production server
+- `npm run lint` - Run ESLint
+- `npm run test` - Run tests
+- `npm run test:watch` - Run tests in watch mode
+- `npm run test:coverage` - Run tests with coverage
+
+## Project Structure
+
+```
+time-dividends-claim/
+├── app/                    # Next.js App Router
+│   ├── globals.css        # Global styles
+│   ├── layout.tsx         # Root layout
+│   ├── page.tsx           # Home page
+│   └── providers.tsx      # Web3 providers
+├── components/            # React components
+│   ├── icons/            # SVG icons
+│   ├── AccountCard.tsx   # Wallet connection display
+│   ├── BalanceDisplay.tsx # Token balance display
+│   ├── DividendsCard.tsx # Dividend management
+│   ├── Header.tsx        # Network header
+│   ├── Modal.tsx         # Modal component
+│   ├── Networks.tsx      # Network selection
+│   ├── Sidebar.tsx       # Navigation sidebar
+│   └── Tooltip.tsx       # Tooltip component
+├── data/                 # Static data
+│   └── networks.ts       # Network configurations
+├── config/               # AppKit configuration
+│   └── index.tsx         # Wagmi adapter setup
+├── context/              # AppKit context
+│   └── index.tsx         # Context provider
+├── lib/                  # Utility libraries
+│   └── moralis.ts        # Moralis API integration
+├── public/               # Static assets
+└── types/                # TypeScript type definitions
+```
+
+## Configuration
+
+### Networks
+
+Supported networks are configured in `data/networks.ts`. Each network includes:
+- Chain ID and RPC URL
+- Token symbol and explorer URL
+- TIME token contract address (where applicable)
+
+### AppKit
+
+AppKit configuration is in `config/index.tsx`. Update the project ID and supported networks as needed.
+
+### Moralis
+
+Moralis integration is in `lib/moralis.ts`. The API key is loaded from environment variables.
+
+## Development Guidelines
+
+### Code Style
+
+- Use Biome for formatting and linting
+- Follow TypeScript strict mode
+- Use functional components with hooks
+- Implement proper error handling
+- Add accessibility attributes
+
+### Component Structure
+
+- Keep components small and focused
+- Use TypeScript interfaces for props
+- Implement proper loading states
+- Handle error states gracefully
 
 ### Testing
 
-The application includes comprehensive tests for the Moralis integration:
+- Write unit tests for utility functions
+- Test component rendering and interactions
+- Mock external dependencies
+- Maintain good test coverage
 
-1. **Run all tests:**
-   ```bash
-   npm test
-   ```
+## Deployment
 
-2. **Run tests in watch mode:**
-   ```bash
-   npm run test:watch
-   ```
+### Vercel (Recommended)
 
-3. **Run tests with coverage:**
-   ```bash
-   npm run test:coverage
-   ```
+1. Push your code to GitHub
+2. Connect your repository to Vercel
+3. Set environment variables in Vercel dashboard
+4. Deploy automatically on push
 
-4. **Test Moralis integration:**
-   ```bash
-   node test-moralis.js
-   ```
+### Other Platforms
 
-The test suite covers:
-- Moralis initialization and configuration
-- Token balance fetching
-- Error handling and validation
-- Data formatting functions
-- Chain validation
+The app can be deployed to any platform that supports Next.js:
+- Netlify
+- Railway
+- DigitalOcean App Platform
+- AWS Amplify
 
-## 🔧 Development
+## Environment Variables
 
-### Available Scripts
-- `npm run dev` - Start development server
-- `npm run build` - Build for production
-- `npm run preview` - Preview production build
-- `npm test` - Run tests
-- `npm run test:watch` - Run tests in watch mode
-- `npm run test:coverage` - Run tests with coverage report
+| Variable | Description | Required |
+|----------|-------------|----------|
+| `NEXT_PUBLIC_MORALIS_API_KEY` | Moralis API key for blockchain data | Yes |
+| `NEXT_PUBLIC_PROJECT_ID` | WalletConnect project ID for AppKit | Yes |
 
-### Key Components
-
-#### App.tsx
-Main application component that manages:
-- Web3Modal connection state
-- Network switching logic
-- Error handling and modal display
-- View state management (network selection vs dividends)
-
-#### Networks.tsx
-Network selection interface with:
-- Visual network cards with icons
-- Network configuration details
-- Confirmation flow
-- Accessibility features
-
-#### DividendsCard.tsx
-Core dividends interface displaying:
-- Total dividends claimed
-- Claimable dividends
-- Sweepable dividends
-- Claim and sweep action buttons
-
-#### Moralis Integration
-The application uses Moralis API to fetch real TIME token balances:
-- Automatic balance fetching when connected to PulseChain
-- Real-time USD value conversion
-- Proper decimal formatting
-- Loading states and error handling
-
-#### Styling & Design
-The application features a comprehensive design system:
-- **Dark Theme**: Professional dark UI with amber accents
-- **Animations**: Smooth transitions, loading states, and hover effects
-- **Responsive Design**: Mobile-first approach with adaptive layouts
-- **Accessibility**: High contrast mode, reduced motion support, focus indicators
-- **Custom Components**: Reusable button, card, and input styles
-- **Glass Effects**: Modern backdrop blur and transparency effects
-
-## 🚀 Production Readiness Checklist
-
-### ✅ Completed
-- [x] Modern React with TypeScript
-- [x] Web3Modal integration
-- [x] Multi-network support
-- [x] Responsive design
-- [x] Error handling
-- [x] Accessibility features
-- [x] Dark theme UI
-- [x] Moralis API integration for TIME token balances
-- [x] Real-time balance fetching on PulseChain
-
-### ⚠️ Required for Production
-
-#### 1. **Smart Contract Integration**
-- [x] TIME token contract integration (PulseChain)
-- [x] Real balance fetching via Moralis API
-- [ ] Dividends contract integration
-- [ ] Transaction signing and submission
-- [ ] Gas estimation
-- [ ] Transaction status tracking
-
-#### 2. **Backend Services**
-- [ ] API for dividend calculations
-- [ ] Price feeds for USD conversion
-- [ ] Transaction history
-- [ ] User analytics
-
-#### 3. **Security & Performance**
-- [ ] Environment variable management
-- [ ] API key security
-- [ ] Rate limiting
-- [ ] Error monitoring (Sentry)
-- [ ] Performance monitoring
-- [ ] CDN configuration
-
-#### 4. **Testing**
-- [x] Unit tests (Jest)
-- [x] Moralis integration tests
-- [ ] Integration tests
-- [ ] E2E tests (Playwright)
-- [ ] Web3 testing (Hardhat)
-
-#### 5. **Deployment**
-- [ ] CI/CD pipeline
-- [ ] Environment-specific builds
-- [ ] Domain configuration
-- [ ] SSL certificates
-- [ ] Monitoring setup
-
-#### 6. **User Experience**
-- [ ] Loading states
-- [ ] Transaction confirmation flows
-- [ ] Success/error notifications
-- [ ] Network status indicators
-- [ ] Mobile wallet deep linking
-
-#### 7. **Compliance & Legal**
-- [ ] Terms of Service
-- [ ] Privacy Policy
-- [ ] Cookie consent
-- [ ] Regulatory compliance
-
-## 🔐 Security Considerations
-
-### Current State
-- Web3Modal handles wallet connections securely
-- No sensitive data stored locally
-- Environment variables for API keys
-
-### Production Requirements
-- Implement proper error boundaries
-- Add input validation
-- Secure API endpoints
-- Implement rate limiting
-- Add audit logging
-
-## 📱 Supported Networks
-
-| Network | Chain ID | Symbol | Status |
-|---------|----------|--------|--------|
-| Ethereum | 1 | ETH | ✅ Supported |
-| PulseChain | 369 | PLS | ✅ Supported |
-| BNB Chain | 56 | BNB | ✅ Supported |
-| Polygon | 137 | MATIC | ✅ Supported |
-| Arbitrum | 42161 | ETH | ✅ Supported |
-| Avalanche | 43114 | AVAX | ✅ Supported |
-| Base | 8453 | ETH | ✅ Supported |
-
-## 🤝 Contributing
+## Contributing
 
 1. Fork the repository
-2. Create a feature branch (`git checkout -b feature/amazing-feature`)
-3. Commit your changes (`git commit -m 'Add amazing feature'`)
-4. Push to the branch (`git push origin feature/amazing-feature`)
-5. Open a Pull Request
+2. Create a feature branch
+3. Make your changes
+4. Add tests if applicable
+5. Run linting and tests
+6. Submit a pull request
 
-## 📄 License
+## License
 
-This project is licensed under the MIT License - see the [LICENSE](LICENSE) file for details.
+This project is licensed under the MIT License.
 
-## 🆘 Support
+## Support
 
-For support, please open an issue in the GitHub repository or contact the development team.
+For support and questions:
+- Create an issue on GitHub
+- Check the documentation
+- Review the code examples
 
----
+## Migration from Vite
 
-## 🎉 **Current Status**
+This project was migrated from Vite to Next.js. Key changes:
 
-✅ **Fully Functional:**
-- Moralis API integration for real TIME token balance fetching
-- Web3Modal wallet connection
-- Multi-network support (7 major chains)
-- Real-time balance display on PulseChain
-- **NO MOCK DATA** - only real blockchain data or proper states
-- Comprehensive error handling and validation
-- Complete test suite with 100% pass rate
-- Production-ready code quality
-- **100% TypeScript** - All components converted from JSX to TSX
-- Clean project structure with proper file organization
+- **File Structure**: Moved from `src/` to `app/` directory
+- **Routing**: Switched to Next.js App Router
+- **Build System**: Changed from Vite to Next.js
+- **Environment Variables**: Updated to use `NEXT_PUBLIC_` prefix
+- **TypeScript Config**: Updated for Next.js compatibility
+- **Testing**: Updated Jest configuration for Next.js
 
-⚠️ **Next Steps for Full Production:**
-- Set `MORALIS_API_KEY` in `.env.local` for real API access
-- Implement dividend contract integration
-- Add transaction signing for claim/sweep functionality
-- Deploy to production environment
+The core functionality remains the same, but the application now benefits from Next.js features like:
+- Server-side rendering
+- Automatic code splitting
+- Built-in optimization
+- Better SEO support
+- Improved development experience
 
-**Note**: The application now fetches real TIME token balances via Moralis API when connected to PulseChain. **NO MOCK DATA** is ever displayed - all values are either real blockchain data, loading states, or "Coming Soon" for features not yet implemented. The dividend claiming functionality still needs smart contract integration for full production use.
+## Migration from Web3Modal to AppKit
 
-## 🔧 **Recent Cleanup**
-- ✅ Converted all JSX files to TypeScript (TSX)
-- ✅ Removed duplicate and conflicting files
-- ✅ Fixed Jest configuration for ES modules
-- ✅ Ensured all tests pass (11/11)
-- ✅ Verified development server runs correctly
+This project was also migrated from Web3Modal to Reown AppKit. Key changes:
+
+- **Web3 Library**: Switched from Web3Modal v5 to AppKit with Wagmi
+- **Wallet Connection**: Now uses AppKit's `<appkit-button>` component
+- **Network Switching**: Uses Wagmi's `useSwitchNetwork` hook
+- **State Management**: Uses Wagmi's `useAccount` and `useNetwork` hooks
+- **Configuration**: AppKit configuration in `config/index.tsx`
+- **Context**: AppKit context provider in `context/index.tsx`
+
+Benefits of AppKit:
+- Better TypeScript support
+- More flexible network configuration
+- Improved SSR support
+- Better developer experience
+- More wallet options

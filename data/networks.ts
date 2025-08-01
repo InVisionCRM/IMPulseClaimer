@@ -1,4 +1,4 @@
-import React from 'react';
+import React from 'react'
 import {
   EthereumIcon,
   PulseChainIcon,
@@ -8,7 +8,7 @@ import {
   AvalancheIcon,
   BaseIcon,
   IconProps
-} from '../components/icons/CurrencyIcons';
+} from '@/components/icons/CurrencyIcons'
 
 export interface Network {
   id: string;

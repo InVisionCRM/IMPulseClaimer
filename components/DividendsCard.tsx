@@ -1,9 +1,9 @@
 
-import React from 'react';
-import Tooltip from './Tooltip';
-import { HelpIcon } from './icons/NavIcons';
-import { Network } from '../data/networks';
-import { IconProps } from './icons/CurrencyIcons';
+import React from 'react'
+import Tooltip from './Tooltip'
+import { HelpIcon } from './icons/NavIcons'
+import { Network } from '@/data/networks'
+import { IconProps } from './icons/CurrencyIcons'
 
 interface DividendsCardProps {
   onClaim: () => void;
@@ -110,4 +110,4 @@ const DividendsCard: React.FC<DividendsCardProps> = ({ onClaim, onSweep, network
   );
 };
 
-export default DividendsCard;
+export default DividendsCard

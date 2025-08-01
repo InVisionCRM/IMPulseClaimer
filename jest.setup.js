@@ -1,32 +1,33 @@
-// Mock environment variables for testing
-global.process = global.process || {};
-global.process.env = global.process.env || {};
-global.process.env.MORALIS_API_KEY = 'test-api-key';
-global.process.env.GEMINI_API_KEY = 'test-gemini-key';
+import '@testing-library/jest-dom'
 
-// Mock console methods to reduce noise in tests
-global.console = {
-  ...console,
-  // Uncomment to suppress console.log during tests
-  // log: jest.fn(),
-  debug: jest.fn(),
-  info: jest.fn(),
-  warn: jest.fn(),
-  error: jest.fn(),
-};
+// Mock Next.js router
+jest.mock('next/navigation', () => ({
+  useRouter() {
+    return {
+      push: jest.fn(),
+      replace: jest.fn(),
+      prefetch: jest.fn(),
+      back: jest.fn(),
+      forward: jest.fn(),
+      refresh: jest.fn(),
+    }
+  },
+  useSearchParams() {
+    return new URLSearchParams()
+  },
+  usePathname() {
+    return '/'
+  },
+}))
+
+// Mock environment variables
+process.env.NEXT_PUBLIC_MORALIS_API_KEY = 'test-api-key'
 
 // Mock window.location
 Object.defineProperty(window, 'location', {
   value: {
-    host: 'localhost:5173',
-    href: 'http://localhost:5173',
+    host: 'localhost:3000',
+    href: 'http://localhost:3000',
   },
   writable: true,
-});
-
-// Mock ResizeObserver
-global.ResizeObserver = jest.fn().mockImplementation(() => ({
-  observe: jest.fn(),
-  unobserve: jest.fn(),
-  disconnect: jest.fn(),
-})); 
+}) 

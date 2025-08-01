@@ -1,4 +1,4 @@
-import React, { useState } from 'react';
+import React, { useState } from 'react'
 
 interface TooltipProps {
   text: string;
@@ -38,4 +38,4 @@ const Tooltip: React.FC<TooltipProps> = ({ text, children, position = 'top' }) =
   );
 };
 
-export default Tooltip; 
+export default Tooltip 

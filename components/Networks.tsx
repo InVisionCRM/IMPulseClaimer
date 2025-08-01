@@ -1,7 +1,7 @@
-import React, { useState } from 'react';
-import { SettingsIcon } from './icons/NavIcons';
-import Modal from './Modal';
-import { networks, Network } from '../data/networks';
+import React, { useState } from 'react'
+import { SettingsIcon } from './icons/NavIcons'
+import Modal from './Modal'
+import { networks, Network } from '@/data/networks'
 
 interface NetworksProps {
   currentNetworkId: string;
@@ -109,4 +109,4 @@ const Networks: React.FC<NetworksProps> = ({ currentNetworkId, onConfirm }) => {
   );
 };
 
-export default Networks; 
+export default Networks 
