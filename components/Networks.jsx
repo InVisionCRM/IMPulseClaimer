@@ -5,10 +5,10 @@ import { networks, Network } from '../data/networks';
 
 
 const Networks = ({ currentNetworkId, onConfirm }) => {
-  const [selectedForConfirmation, setSelectedForConfirmation] = useState<string>(currentNetworkId);
-  const [networkForConfigModal, setNetworkForConfigModal] = useState<Network | null>(null);
+  const [selectedForConfirmation, setSelectedForConfirmation] = useState(currentNetworkId);
+  const [networkForConfigModal, setNetworkForConfigModal] = useState(null);
 
-  const handleOpenConfig = (network: Network, e: React.MouseEvent) => {
+  const handleOpenConfig = (network, e) => {
     e.stopPropagation();
     setNetworkForConfigModal(network);
   };
@@ -17,7 +17,7 @@ const Networks = ({ currentNetworkId, onConfirm }) => {
     setNetworkForConfigModal(null);
   };
 
-  const NetworkConfigDisplay = ({ network }: { network: Network }) => (
+  const NetworkConfigDisplay = ({ network }) => (
     <div className="text-center">
         <div className="flex items-center justify-center mb-6 gap-4">
             {React.createElement(network.icon, { size: 32 })}
