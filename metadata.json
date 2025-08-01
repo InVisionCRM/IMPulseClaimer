@@ -1,0 +1,6 @@
+{
+  "name": "TIME Dividends Claim",
+  "description": "A web application for users to view and claim their T.I.M.E. token dividend rewards, inspired by the Internet Money Wallet interface. This provides a web-based alternative for reward claiming.",
+  "requestFramePermissions": [],
+  "prompt": ""
+}
