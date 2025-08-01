@@ -19,10 +19,40 @@ console.log('Root element found:', rootElement);
 const root = ReactDOM.createRoot(rootElement);
 console.log('React root created');
 
+// Test with a simple component first
+const TestComponent = () => {
+  console.log('TestComponent rendering');
+  return (
+    <div style={{ 
+      padding: '20px', 
+      backgroundColor: '#131313', 
+      color: 'white',
+      fontFamily: 'Arial, sans-serif',
+      fontSize: '16px'
+    }}>
+      <h1>React is working!</h1>
+      <p>If you can see this, React is loading properly.</p>
+      <button 
+        onClick={() => console.log('Button clicked!')}
+        style={{
+          backgroundColor: '#F59E0B',
+          color: 'black',
+          padding: '10px 20px',
+          border: 'none',
+          borderRadius: '5px',
+          cursor: 'pointer'
+        }}
+      >
+        Test Button
+      </button>
+    </div>
+  );
+};
+
 root.render(
   <React.StrictMode>
-    <App />
+    <TestComponent />
   </React.StrictMode>
 );
 
-console.log('App component rendered');
+console.log('Test component rendered');
