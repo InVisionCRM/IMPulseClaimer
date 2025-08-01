@@ -122,7 +122,7 @@ const App = () => {
     fetchTimeBalance();
   }, [isConnected, address, currentNetwork]);
 
-  const handleNetworkSelection = async (networkId: string) => {
+  const handleNetworkSelection = async (networkId) => {
     const selectedNetwork = networks.find(n => n.id === networkId);
     if (!selectedNetwork) return;
 
@@ -152,7 +152,7 @@ const App = () => {
     }
   };
 
-  const handleAttempt = (action: 'Claim' | 'Sweep') => {
+  const handleAttempt = (action) => {
     if (!isConnected) {
       setModalMessage('Please connect your wallet first.');
       setIsErrorModalOpen(true);
