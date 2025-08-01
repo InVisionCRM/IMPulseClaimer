@@ -1,14 +1,18 @@
 import React, { useState } from 'react';
 import { SettingsIcon } from './icons/NavIcons';
 import Modal from './Modal';
-import { networks } from '../data/networks.js';
+import { networks, Network } from '../data/networks';
 
+interface NetworksProps {
+  currentNetworkId: string;
+  onConfirm: (networkId: string) => void;
+}
 
-const Networks = ({ currentNetworkId, onConfirm }) => {
-  const [selectedForConfirmation, setSelectedForConfirmation] = useState(currentNetworkId);
-  const [networkForConfigModal, setNetworkForConfigModal] = useState(null);
+const Networks: React.FC<NetworksProps> = ({ currentNetworkId, onConfirm }) => {
+  const [selectedForConfirmation, setSelectedForConfirmation] = useState<string>(currentNetworkId);
+  const [networkForConfigModal, setNetworkForConfigModal] = useState<Network | null>(null);
 
-  const handleOpenConfig = (network, e) => {
+  const handleOpenConfig = (network: Network, e: React.MouseEvent) => {
     e.stopPropagation();
     setNetworkForConfigModal(network);
   };
@@ -17,7 +21,7 @@ const Networks = ({ currentNetworkId, onConfirm }) => {
     setNetworkForConfigModal(null);
   };
 
-  const NetworkConfigDisplay = ({ network }) => (
+  const NetworkConfigDisplay = ({ network }: { network: Network }) => (
     <div className="text-center">
         <div className="flex items-center justify-center mb-6 gap-4">
             {React.createElement(network.icon, { size: 32 })}
@@ -105,4 +109,4 @@ const Networks = ({ currentNetworkId, onConfirm }) => {
   );
 };
 
-export default Networks;
+export default Networks; 

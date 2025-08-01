@@ -13,24 +13,6 @@ export default defineConfig(({ mode }) => {
         alias: {
           '@': path.resolve(__dirname, '.'),
         }
-      },
-      build: {
-        rollupOptions: {
-          external: ['assert', 'stream'],
-          output: {
-            manualChunks: {
-              vendor: ['react', 'react-dom'],
-              web3modal: ['@web3modal/ethers'],
-              moralis: ['moralis'],
-              ethers: ['ethers']
-            }
-          }
-        },
-        target: 'es2020',
-        minify: 'esbuild'
-      },
-      optimizeDeps: {
-        include: ['react', 'react-dom', '@web3modal/ethers']
       }
     };
-}); 
+});

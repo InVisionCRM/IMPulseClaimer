@@ -1,7 +1,7 @@
 import Moralis from 'moralis';
 
 // Initialize Moralis with API key
-export const initializeMoralis = async (apiKey) => {
+export const initializeMoralis = async (apiKey: string) => {
   try {
     if (!Moralis.Core.isStarted) {
       await Moralis.start({
@@ -15,12 +15,34 @@ export const initializeMoralis = async (apiKey) => {
   }
 };
 
+// Interface for token balance response based on Moralis API
+export interface TokenBalance {
+  token_address: string;
+  name: string;
+  symbol: string;
+  logo?: string;
+  thumbnail?: string;
+  decimals: number;
+  balance: string;
+  usd_price?: number;
+  usd_value?: number;
+  possible_spam?: boolean;
+  verified_contract?: boolean;
+}
+
+// Interface for the API response
+export interface WalletTokenResponse {
+  address: string;
+  token_balances: TokenBalance[];
+  total_usd_value?: number;
+}
+
 // Get wallet token balances for a specific chain
 export const getWalletTokenBalances = async (
-  address,
-  chain,
-  tokenAddresses
-) => {
+  address: string,
+  chain: string,
+  tokenAddresses?: string[]
+): Promise<WalletTokenResponse> => {
   try {
     // Validate inputs
     if (!address || !chain) {
@@ -39,7 +61,7 @@ export const getWalletTokenBalances = async (
       include: 'percent_change' // Include price change data
     });
 
-    return response.raw;
+    return response.raw as WalletTokenResponse;
   } catch (error) {
     console.error('Error fetching wallet token balances:', error);
     
@@ -60,10 +82,10 @@ export const getWalletTokenBalances = async (
 
 // Get TIME token balance specifically
 export const getTimeTokenBalance = async (
-  address,
-  chain,
-  timeTokenAddress
-) => {
+  address: string,
+  chain: string,
+  timeTokenAddress: string
+): Promise<TokenBalance | null> => {
   try {
     // Validate inputs
     if (!address || !chain || !timeTokenAddress) {
@@ -84,11 +106,11 @@ export const getTimeTokenBalance = async (
   }
 };
 
-// Get all token balances for debugging
+// Get all token balances for a wallet (useful for debugging)
 export const getAllTokenBalances = async (
-  address,
-  chain
-) => {
+  address: string,
+  chain: string
+): Promise<WalletTokenResponse> => {
   try {
     return await getWalletTokenBalances(address, chain);
   } catch (error) {
@@ -97,28 +119,22 @@ export const getAllTokenBalances = async (
   }
 };
 
-// Format token balance with proper decimals
-export const formatTokenBalance = (balance, decimals) => {
+// Format balance with proper decimals
+export const formatTokenBalance = (balance: string, decimals: number): string => {
   try {
-    if (!balance || isNaN(balance)) {
-      return '0.000000';
-    }
-
-    const balanceNumber = parseFloat(balance);
+    const balanceNumber = parseFloat(balance) / Math.pow(10, decimals);
+    
+    // Handle NaN values
     if (isNaN(balanceNumber)) {
       return '0.000000';
     }
-
-    // Convert from wei to token units
-    const tokenBalance = balanceNumber / Math.pow(10, decimals);
     
     // Handle very small numbers
-    if (tokenBalance < 0.000001 && tokenBalance > 0) {
+    if (balanceNumber < 0.000001 && balanceNumber > 0) {
       return '< 0.000001';
     }
-
-    // Format to 6 decimal places
-    return tokenBalance.toFixed(6);
+    
+    return balanceNumber.toFixed(6);
   } catch (error) {
     console.error('Error formatting token balance:', error);
     return '0.000000';
@@ -126,42 +142,33 @@ export const formatTokenBalance = (balance, decimals) => {
 };
 
 // Format USD value
-export const formatUSDValue = (value) => {
+export const formatUSDValue = (value?: number): string => {
+  if (!value || isNaN(value)) return '$0.00';
+  
   try {
-    if (value === undefined || value === null || isNaN(value)) {
-      return '$0.00';
-    }
-
-    const numValue = parseFloat(value);
-    if (isNaN(numValue)) {
-      return '$0.00';
-    }
-
-    // Handle very small values
-    if (numValue < 0.01 && numValue > 0) {
+    if (value < 0.01 && value > 0) {
       return '< $0.01';
     }
-
-    // Format to 2 decimal places
-    return `$${numValue.toFixed(2)}`;
+    return `$${value.toFixed(2)}`;
   } catch (error) {
     console.error('Error formatting USD value:', error);
     return '$0.00';
   }
 };
 
-// Check if Moralis is initialized
-export const isMoralisInitialized = () => {
+// Check if Moralis is properly initialized
+export const isMoralisInitialized = (): boolean => {
   return Moralis.Core.isStarted;
 };
 
-// Get supported chains
-export const getSupportedChains = () => {
-  return ['eth', 'polygon', 'bsc', 'avalanche', 'arbitrum', 'base', 'pulse'];
+// Get supported chains for Moralis
+export const getSupportedChains = (): string[] => {
+  return [
+    'eth', 'polygon', 'bsc', 'avalanche', 'arbitrum', 'base', 'pulse'
+  ];
 };
 
 // Validate chain parameter
-export const isValidChain = (chain) => {
-  const supportedChains = getSupportedChains();
-  return supportedChains.includes(chain);
+export const isValidChain = (chain: string): boolean => {
+  return getSupportedChains().includes(chain);
 }; 

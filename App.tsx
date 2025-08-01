@@ -1,5 +1,5 @@
 import React, { useState, useEffect } from 'react';
-import { useWeb3Modal, useWeb3ModalAccount, useSwitchNetwork } from '@web3modal/ethers/react';
+import { useWeb3Modal, useWeb3ModalAccount } from '@web3modal/ethers/react';
 import Sidebar from './components/Sidebar';
 import Header from './components/Header';
 import AccountCard from './components/AccountCard';
@@ -8,33 +8,28 @@ import DividendsCard from './components/DividendsCard';
 import Modal from './components/Modal';
 import Networks from './components/Networks';
 import { TimeIcon } from './components/icons/CurrencyIcons';
-import { networks } from './data/networks.js';
-import { debugWeb3Modal } from './lib/web3modal.js';
-import { initializeMoralis, getTimeTokenBalance, formatTokenBalance, formatUSDValue, isMoralisInitialized, isValidChain } from './lib/moralis.js';
+import { networks, Network } from './data/networks';
+import { web3modal } from './lib/web3modal';
+import { initializeMoralis, getTimeTokenBalance, formatTokenBalance, formatUSDValue, TokenBalance, isMoralisInitialized, isValidChain } from './lib/moralis';
 
-const App = () => {
-  const [isErrorModalOpen, setIsErrorModalOpen] = useState(false);
-  const [modalMessage, setModalMessage] = useState('');
-  const [activeView, setActiveView] = useState('network');
-  const [timeBalance, setTimeBalance] = useState(null);
-  const [isLoadingBalance, setIsLoadingBalance] = useState(false);
-  const [isLoadingDividends, setIsLoadingDividends] = useState(false);
+const App: React.FC = () => {
+  const [isErrorModalOpen, setIsErrorModalOpen] = useState<boolean>(false);
+  const [modalMessage, setModalMessage] = useState<string>('');
+  const [activeView, setActiveView] = useState<string>('network');
+  const [timeBalance, setTimeBalance] = useState<TokenBalance | null>(null);
+  const [isLoadingBalance, setIsLoadingBalance] = useState<boolean>(false);
+  const [isLoadingDividends, setIsLoadingDividends] = useState<boolean>(false);
 
   // Web3Modal hooks
   const { open } = useWeb3Modal();
   const { address, chainId, isConnected } = useWeb3ModalAccount();
-  const { switchNetwork } = useSwitchNetwork();
 
   const initialNetwork = networks.find(n => n.config.chainId === 1) || networks[0];
-  const [currentNetwork, setCurrentNetwork] = useState(initialNetwork);
+  const [currentNetwork, setCurrentNetwork] = useState<Network>(initialNetwork);
   
-  // Initialize services on component mount
+  // Initialize Moralis on component mount
   useEffect(() => {
-    const initializeServices = async () => {
-      // Debug Web3Modal configuration
-      debugWeb3Modal();
-      
-      // Initialize Moralis
+    const initMoralis = async () => {
       const apiKey = process.env.MORALIS_API_KEY;
       if (!apiKey) {
         console.warn('Moralis API key not found. Please set MORALIS_API_KEY in your environment variables.');
@@ -50,7 +45,7 @@ const App = () => {
       }
     };
     
-    initializeServices();
+    initMoralis();
   }, []);
 
   // Update currentNetwork when chainId changes
@@ -122,37 +117,27 @@ const App = () => {
     fetchTimeBalance();
   }, [isConnected, address, currentNetwork]);
 
-  const handleNetworkSelection = async (networkId) => {
+  const handleNetworkSelection = async (networkId: string) => {
     const selectedNetwork = networks.find(n => n.id === networkId);
     if (!selectedNetwork) return;
 
     if (!isConnected) {
       // Prompt connection if not already connected
-      try {
-        console.log('Opening Web3Modal for wallet connection...');
-        await open();
-        console.log('Web3Modal opened successfully');
-      } catch (error) {
-        console.error('Failed to open Web3Modal:', error);
-        setModalMessage('Failed to open wallet connection. Please try again.');
-        setIsErrorModalOpen(true);
-        return;
-      }
+      await open();
     }
     
-        try {
-      // Switch network using Web3Modal
-      console.log(`Switching to network: ${selectedNetwork.name} (Chain ID: ${selectedNetwork.config.chainId})`);
-      await switchNetwork(selectedNetwork.config.chainId);
+    try {
+       // Switch network using Web3Modal
+      await web3modal.switchNetwork(selectedNetwork.config.chainId);
       setActiveView('dividends');
     } catch (error) {
       console.error('Failed to switch network:', error);
-      setModalMessage(`Failed to switch to ${selectedNetwork.name}. Please try again from your wallet.`);
+      setModalMessage('Failed to switch network. Please try again from your wallet.');
       setIsErrorModalOpen(true);
     }
   };
 
-  const handleAttempt = (action) => {
+  const handleAttempt = (action: 'Claim' | 'Sweep') => {
     if (!isConnected) {
       setModalMessage('Please connect your wallet first.');
       setIsErrorModalOpen(true);
