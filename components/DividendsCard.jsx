@@ -3,7 +3,7 @@ import React from 'react';
 import Tooltip from './Tooltip';
 import { HelpIcon } from './icons/NavIcons';
 
-import { IconProps } from './icons/CurrencyIcons';
+
 
 
 const DividendRow = ({ label, amount, value, symbol, icon: Icon, isLoading = false }) => (

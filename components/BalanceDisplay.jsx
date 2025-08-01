@@ -1,7 +1,7 @@
 
 import React from 'react';
 import Tooltip from './Tooltip';
-import { IconProps } from './icons/CurrencyIcons';
+
 
 
 const BalanceDisplay = ({ 

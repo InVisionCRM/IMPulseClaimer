@@ -1,7 +1,7 @@
 import React, { useState } from 'react';
 import { SettingsIcon } from './icons/NavIcons';
 import Modal from './Modal';
-import { networks } from '../data/networks';
+import { networks } from '../data/networks.js';
 
 
 const Networks = ({ currentNetworkId, onConfirm }) => {

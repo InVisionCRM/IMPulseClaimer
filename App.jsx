@@ -8,9 +8,9 @@ import DividendsCard from './components/DividendsCard';
 import Modal from './components/Modal';
 import Networks from './components/Networks';
 import { TimeIcon } from './components/icons/CurrencyIcons';
-import { networks } from './data/networks';
-import { debugWeb3Modal } from './lib/web3modal';
-import { initializeMoralis, getTimeTokenBalance, formatTokenBalance, formatUSDValue, isMoralisInitialized, isValidChain } from './lib/moralis';
+import { networks } from './data/networks.js';
+import { debugWeb3Modal } from './lib/web3modal.js';
+import { initializeMoralis, getTimeTokenBalance, formatTokenBalance, formatUSDValue, isMoralisInitialized, isValidChain } from './lib/moralis.js';
 
 const App = () => {
   const [isErrorModalOpen, setIsErrorModalOpen] = useState(false);
@@ -152,7 +152,7 @@ const App = () => {
     }
   };
 
-  const handleAttempt = (action: 'Claim' | 'Sweep') => {
+  const handleAttempt = (action) => {
     if (!isConnected) {
       setModalMessage('Please connect your wallet first.');
       setIsErrorModalOpen(true);

@@ -33,4 +33,4 @@ export default defineConfig(({ mode }) => {
         include: ['react', 'react-dom', '@web3modal/ethers']
       }
     };
-});
+}); 
