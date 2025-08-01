@@ -7,7 +7,7 @@ import {
   ArbitrumIcon,
   AvalancheIcon,
   BaseIcon
-} from '../components/icons/CurrencyIcons.js';
+} from '../components/icons/CurrencyIcons.jsx';
 
 export const networks = [
     { id: 'ethereum', name: 'Ethereum', icon: EthereumIcon, config: { name: 'Ethereum Mainnet', chainId: 1, rpcUrl: 'https://cloudflare-eth.com', symbol: 'ETH', explorerUrl: 'https://etherscan.io' } },
