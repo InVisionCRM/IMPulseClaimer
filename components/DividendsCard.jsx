@@ -5,19 +5,13 @@ import { HelpIcon } from './icons/NavIcons';
 import { Network } from '../data/networks';
 import { IconProps } from './icons/CurrencyIcons';
 
-interface DividendsCardProps {
-  onClaim: () => void;
-  onSweep: () => void;
-  network: Network;
-  isLoading?: boolean;
-}
 
 const DividendRow: React.FC<{
   label: string;
   amount: string;
   value: string;
   symbol: string;
-  icon: React.FC<IconProps>;
+  icon;
   isLoading?: boolean;
 }> = ({ label, amount, value, symbol, icon: Icon, isLoading = false }) => (
   <div className="flex justify-between items-center py-4">
@@ -36,7 +30,7 @@ const DividendRow: React.FC<{
   </div>
 );
 
-const DividendsCard: React.FC<DividendsCardProps> = ({ onClaim, onSweep, network, isLoading = false }) => {
+const DividendsCard = ({ onClaim, onSweep, network, isLoading = false }) => {
   const sweepTooltip = "By sweeping, all dividends that have accrued are brought into the TIME smart contract and made available to claim. This is an optional transaction, as when one person sweeps, dividends are distributed for everyone.";
   const claimTooltip = "By claiming, you are transferring all earned dividends to your account holding TIME.";
 

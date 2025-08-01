@@ -3,11 +3,8 @@ import React from 'react';
 import { Network } from '../data/networks';
 import { TimeIcon } from './icons/CurrencyIcons';
 
-interface HeaderProps {
-    network: Network;
-}
 
-const Header: React.FC<HeaderProps> = ({ network }) => {
+const Header = ({ network }) => {
     return (
         <header className="flex justify-between items-center">
             <div className="flex items-center gap-3">

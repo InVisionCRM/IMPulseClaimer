@@ -1,11 +1,7 @@
 
 import React from 'react';
 
-interface IconProps {
-  className?: string;
-}
-
-export const GitlabIcon: React.FC<IconProps> = ({ className }) => (
+export const GitlabIcon = ({ className }) => (
     <svg 
       className={className || 'w-6 h-6'} 
       viewBox="0 0 36 36" 

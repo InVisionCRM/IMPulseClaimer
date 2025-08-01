@@ -1,13 +1,8 @@
 
 import React from 'react';
 
-interface TooltipProps {
-  children: React.ReactNode;
-  text: string;
-  position?: 'top' | 'bottom' | 'left' | 'right';
-}
 
-const Tooltip: React.FC<TooltipProps> = ({ children, text, position = 'bottom' }) => {
+const Tooltip = ({ children, text, position = 'bottom' }) => {
   const positionClasses = {
     top: 'bottom-full mb-2',
     bottom: 'top-full mt-2',

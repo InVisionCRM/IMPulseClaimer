@@ -2,11 +2,8 @@
 import React from 'react';
 import { ChevronRightIcon } from './icons/NavIcons';
 
-interface AccountCardProps {
-  address: string | null;
-}
 
-const AccountCard: React.FC<AccountCardProps> = ({ address }) => {
+const AccountCard = ({ address }) => {
   if (!address) {
     return (
       <div className="bg-[#1C1C1C] p-4 rounded-xl flex justify-center items-center">

@@ -1,24 +1,24 @@
 import React, { useState, useEffect } from 'react';
 import { useWeb3Modal, useWeb3ModalAccount, useSwitchNetwork } from '@web3modal/ethers/react';
-import Sidebar from './components/Sidebar';
-import Header from './components/Header';
-import AccountCard from './components/AccountCard';
-import BalanceDisplay from './components/BalanceDisplay';
-import DividendsCard from './components/DividendsCard';
-import Modal from './components/Modal';
-import Networks from './components/Networks';
-import { TimeIcon } from './components/icons/CurrencyIcons';
-import { networks, Network } from './data/networks';
-import { debugWeb3Modal } from './lib/web3modal';
-import { initializeMoralis, getTimeTokenBalance, formatTokenBalance, formatUSDValue, TokenBalance, isMoralisInitialized, isValidChain } from './lib/moralis';
+import Sidebar from './components/Sidebar.jsx';
+import Header from './components/Header.jsx';
+import AccountCard from './components/AccountCard.jsx';
+import BalanceDisplay from './components/BalanceDisplay.jsx';
+import DividendsCard from './components/DividendsCard.jsx';
+import Modal from './components/Modal.jsx';
+import Networks from './components/Networks.jsx';
+import { TimeIcon } from './components/icons/CurrencyIcons.jsx';
+import { networks, Network } from './data/networks.js';
+import { debugWeb3Modal } from './lib/web3modal.js';
+import { initializeMoralis, getTimeTokenBalance, formatTokenBalance, formatUSDValue, TokenBalance, isMoralisInitialized, isValidChain } from './lib/moralis.js';
 
-const App: React.FC = () => {
-  const [isErrorModalOpen, setIsErrorModalOpen] = useState<boolean>(false);
-  const [modalMessage, setModalMessage] = useState<string>('');
-  const [activeView, setActiveView] = useState<string>('network');
-  const [timeBalance, setTimeBalance] = useState<TokenBalance | null>(null);
-  const [isLoadingBalance, setIsLoadingBalance] = useState<boolean>(false);
-  const [isLoadingDividends, setIsLoadingDividends] = useState<boolean>(false);
+const App = () => {
+  const [isErrorModalOpen, setIsErrorModalOpen] = useState(false);
+  const [modalMessage, setModalMessage] = useState('');
+  const [activeView, setActiveView] = useState('network');
+  const [timeBalance, setTimeBalance] = useState(null);
+  const [isLoadingBalance, setIsLoadingBalance] = useState(false);
+  const [isLoadingDividends, setIsLoadingDividends] = useState(false);
 
   // Web3Modal hooks
   const { open } = useWeb3Modal();
@@ -26,7 +26,7 @@ const App: React.FC = () => {
   const { switchNetwork } = useSwitchNetwork();
 
   const initialNetwork = networks.find(n => n.config.chainId === 1) || networks[0];
-  const [currentNetwork, setCurrentNetwork] = useState<Network>(initialNetwork);
+  const [currentNetwork, setCurrentNetwork] = useState(initialNetwork);
   
   // Initialize services on component mount
   useEffect(() => {

@@ -3,12 +3,8 @@ import { SettingsIcon } from './icons/NavIcons';
 import Modal from './Modal';
 import { networks, Network } from '../data/networks';
 
-interface NetworksProps {
-  currentNetworkId: string;
-  onConfirm: (networkId: string) => void;
-}
 
-const Networks: React.FC<NetworksProps> = ({ currentNetworkId, onConfirm }) => {
+const Networks = ({ currentNetworkId, onConfirm }) => {
   const [selectedForConfirmation, setSelectedForConfirmation] = useState<string>(currentNetworkId);
   const [networkForConfigModal, setNetworkForConfigModal] = useState<Network | null>(null);
 

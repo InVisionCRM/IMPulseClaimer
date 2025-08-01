@@ -3,16 +3,8 @@ import React from 'react';
 import Tooltip from './Tooltip';
 import { IconProps } from './icons/CurrencyIcons';
 
-interface BalanceDisplayProps {
-  title: string;
-  amount: string;
-  value: string;
-  icon: React.ReactElement;
-  tooltipText: string;
-  isLoading?: boolean;
-}
 
-const BalanceDisplay: React.FC<BalanceDisplayProps> = ({ 
+const BalanceDisplay = ({ 
   title, 
   amount, 
   value, 

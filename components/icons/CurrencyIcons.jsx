@@ -1,11 +1,6 @@
 import React from 'react';
 
-export interface IconProps {
-  size?: number;
-  className?: string;
-}
-
-export const TimeIcon: React.FC<IconProps> = ({ size = 24, className = '' }) => (
+export const TimeIcon = ({ size = 24, className = '' }) => (
   <svg
     width={size}
     height={size}
@@ -25,7 +20,7 @@ export const TimeIcon: React.FC<IconProps> = ({ size = 24, className = '' }) => 
   </svg>
 );
 
-export const EthereumIcon: React.FC<IconProps> = ({ size = 32, className = '' }) => (
+export const EthereumIcon = ({ size = 32, className = '' }) => (
   <svg width={size} height={size} viewBox="0 0 32 32" fill="none" xmlns="http://www.w3.org/2000/svg" className={className}>
     <path d="M16 31.9999L15.5227 31.3652V17.0165L16 16.514L24.4773 21.0357L16 31.9999Z" fill="#71717A"/>
     <path d="M16 31.9999L7.52273 21.0357L16 16.514V31.9999Z" fill="#A1A1AA"/>
@@ -36,7 +31,7 @@ export const EthereumIcon: React.FC<IconProps> = ({ size = 32, className = '' })
   </svg>
 );
 
-export const BaseIcon: React.FC<IconProps> = ({ size = 32, className = '' }) => (
+export const BaseIcon = ({ size = 32, className = '' }) => (
     <svg width={size} height={size} viewBox="0 0 32 32" fill="none" xmlns="http://www.w3.org/2000/svg" className={className}>
         <circle cx="16" cy="16" r="16" fill="#0052FF"/>
         <path d="M9 13.4839H23V15.7419H9V13.4839Z" fill="white"/>
@@ -44,7 +39,7 @@ export const BaseIcon: React.FC<IconProps> = ({ size = 32, className = '' }) => 
     </svg>
 );
 
-export const BNBIcon: React.FC<IconProps> = ({ size = 32, className = '' }) => (
+export const BNBIcon = ({ size = 32, className = '' }) => (
     <svg width={size} height={size} viewBox="0 0 32 32" fill="none" xmlns="http://www.w3.org/2000/svg" className={className}>
         <circle cx="16" cy="16" r="16" fill="#F0B90B"/>
         <path d="M16 9.5L12 12.5L16 15.5L20 12.5L16 9.5Z" fill="#0B0E11"/>
@@ -56,7 +51,7 @@ export const BNBIcon: React.FC<IconProps> = ({ size = 32, className = '' }) => (
     </svg>
 );
 
-export const PolygonIcon: React.FC<IconProps> = ({ size = 32, className = '' }) => (
+export const PolygonIcon = ({ size = 32, className = '' }) => (
     <svg width={size} height={size} viewBox="0 0 32 32" fill="none" xmlns="http://www.w3.org/2000/svg" className={className}>
         <circle cx="16" cy="16" r="16" fill="#8247E5"/>
         <path d="M11.666 12.5455L16.3327 9.63635L21.0004 12.5455V18.3636L16.3327 21.2727L11.666 18.3636V12.5455Z" stroke="white" strokeWidth="1.5"/>
@@ -64,7 +59,7 @@ export const PolygonIcon: React.FC<IconProps> = ({ size = 32, className = '' }) 
     </svg>
 );
 
-export const ArbitrumIcon: React.FC<IconProps> = ({ size = 32, className = '' }) => (
+export const ArbitrumIcon = ({ size = 32, className = '' }) => (
     <svg width={size} height={size} viewBox="0 0 32 32" fill="none" xmlns="http://www.w3.org/2000/svg" className={className}>
         <circle cx="16" cy="16" r="16" fill="#2D374B"/>
         <path d="M23 11.8333L16.5 8L10 11.8333L16.5 15.6667L23 11.8333Z" fill="#28A0F0"/>
@@ -72,7 +67,7 @@ export const ArbitrumIcon: React.FC<IconProps> = ({ size = 32, className = '' })
     </svg>
 );
 
-export const AvalancheIcon: React.FC<IconProps> = ({ size = 32, className = '' }) => (
+export const AvalancheIcon = ({ size = 32, className = '' }) => (
     <svg width={size} height={size} viewBox="0 0 32 32" fill="none" xmlns="http://www.w3.org/2000/svg" className={className}>
         <circle cx="16" cy="16" r="16" fill="#E84142"/>
         <path d="M11.293 23.9999L18.4147 8.99988H21.571L14.451 23.9999H11.293Z" fill="white"/>
@@ -80,7 +75,7 @@ export const AvalancheIcon: React.FC<IconProps> = ({ size = 32, className = '' }
     </svg>
 );
 
-export const PulseChainIcon: React.FC<IconProps> = ({ size = 32, className = '' }) => (
+export const PulseChainIcon = ({ size = 32, className = '' }) => (
     <svg width={size} height={size} viewBox="0 0 32 32" fill="none" xmlns="http://www.w3.org/2000/svg" className={className}>
         <circle cx="16" cy="16" r="16" fill="#A100F2"/>
         <path d="M13.5 10H18C20.4853 10 22.5 12.0147 22.5 14.5C22.5 16.9853 20.4853 19 18 19H13.5V10Z" fill="white"/>

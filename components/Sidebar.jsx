@@ -8,14 +8,8 @@ import {
   ExpandIcon,
 } from './icons/NavIcons';
 
-interface SidebarItemProps {
-  icon: React.ReactNode;
-  label: string;
-  active?: boolean;
-  onClick: () => void;
-}
 
-const SidebarItem: React.FC<SidebarItemProps> = ({ icon, label, active = false, onClick }) => {
+const SidebarItem = ({ icon, label, active = false, onClick }) => {
   return (
     <button
       onClick={onClick}
@@ -30,12 +24,8 @@ const SidebarItem: React.FC<SidebarItemProps> = ({ icon, label, active = false, 
   );
 };
 
-interface SidebarProps {
-    activeView: string;
-    onNavigate: (view: string) => void;
-}
 
-const Sidebar: React.FC<SidebarProps> = ({ activeView, onNavigate }) => {
+const Sidebar = ({ activeView, onNavigate }) => {
   return (
     <div className="w-20 bg-[#1C1C1C] flex flex-col items-center py-6 border-r border-gray-700">
       {/* Logo */}
