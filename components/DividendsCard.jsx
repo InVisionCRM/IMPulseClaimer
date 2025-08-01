@@ -2,18 +2,10 @@
 import React from 'react';
 import Tooltip from './Tooltip';
 import { HelpIcon } from './icons/NavIcons';
-import { Network } from '../data/networks';
-import { IconProps } from './icons/CurrencyIcons';
+import { Network } from '../data/networks.js';
 
 
-const DividendRow: React.FC<{
-  label: string;
-  amount: string;
-  value: string;
-  symbol: string;
-  icon;
-  isLoading?: boolean;
-}> = ({ label, amount, value, symbol, icon: Icon, isLoading = false }) => (
+const DividendRow = ({ label, amount, value, symbol, icon: Icon, isLoading = false }) => (
   <div className="flex justify-between items-center py-4">
     <span className="text-gray-300">{label}</span>
     <div className="text-right">
