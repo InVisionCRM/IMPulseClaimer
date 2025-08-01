@@ -1,16 +1,16 @@
 import React, { useState, useEffect } from 'react';
 import { useWeb3Modal, useWeb3ModalAccount, useSwitchNetwork } from '@web3modal/ethers/react';
-import Sidebar from './components/Sidebar.jsx';
-import Header from './components/Header.jsx';
-import AccountCard from './components/AccountCard.jsx';
-import BalanceDisplay from './components/BalanceDisplay.jsx';
-import DividendsCard from './components/DividendsCard.jsx';
-import Modal from './components/Modal.jsx';
-import Networks from './components/Networks.jsx';
-import { TimeIcon } from './components/icons/CurrencyIcons.jsx';
-import { networks, Network } from './data/networks.js';
-import { debugWeb3Modal } from './lib/web3modal.js';
-import { initializeMoralis, getTimeTokenBalance, formatTokenBalance, formatUSDValue, TokenBalance, isMoralisInitialized, isValidChain } from './lib/moralis.js';
+import Sidebar from './components/Sidebar';
+import Header from './components/Header';
+import AccountCard from './components/AccountCard';
+import BalanceDisplay from './components/BalanceDisplay';
+import DividendsCard from './components/DividendsCard';
+import Modal from './components/Modal';
+import Networks from './components/Networks';
+import { TimeIcon } from './components/icons/CurrencyIcons';
+import { networks } from './data/networks';
+import { debugWeb3Modal } from './lib/web3modal';
+import { initializeMoralis, getTimeTokenBalance, formatTokenBalance, formatUSDValue, isMoralisInitialized, isValidChain } from './lib/moralis';
 
 const App = () => {
   const [isErrorModalOpen, setIsErrorModalOpen] = useState(false);
@@ -152,7 +152,7 @@ const App = () => {
     }
   };
 
-  const handleAttempt = (action) => {
+  const handleAttempt = (action: 'Claim' | 'Sweep') => {
     if (!isConnected) {
       setModalMessage('Please connect your wallet first.');
       setIsErrorModalOpen(true);

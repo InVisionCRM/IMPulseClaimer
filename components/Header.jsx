@@ -1,6 +1,6 @@
 
 import React from 'react';
-import { Network } from '../data/networks';
+
 import { TimeIcon } from './icons/CurrencyIcons';
 
 

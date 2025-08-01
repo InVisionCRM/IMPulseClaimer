@@ -1,20 +1,16 @@
 export default {
-  preset: 'ts-jest/presets/default-esm',
   testEnvironment: 'jsdom',
   roots: ['<rootDir>'],
   testMatch: [
-    '**/__tests__/**/*.+(ts|tsx|js)',
-    '**/*.(test|spec).+(ts|tsx|js)'
+    '**/__tests__/**/*.js',
+    '**/*.(test|spec).js'
   ],
   transform: {
-    '^.+\\.(ts|tsx)$': ['ts-jest', {
-      useESM: true,
-    }],
+    '^.+\\.jsx?$': 'babel-jest',
   },
   collectCoverageFrom: [
-    'lib/**/*.{ts,tsx}',
-    'components/**/*.{ts,tsx}',
-    '!**/*.d.ts',
+    'lib/**/*.{js,jsx}',
+    'components/**/*.{js,jsx}',
     '!**/node_modules/**',
   ],
   moduleNameMapper: {
@@ -22,5 +18,4 @@ export default {
   },
   setupFilesAfterEnv: ['<rootDir>/jest.setup.js'],
   testTimeout: 10000,
-  extensionsToTreatAsEsm: ['.ts', '.tsx'],
 }; 
