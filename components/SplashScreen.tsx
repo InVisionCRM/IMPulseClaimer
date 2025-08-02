@@ -109,6 +109,23 @@ const SplashScreen: React.FC<SplashScreenProps> = ({ onComplete }) => {
               </div>
             </div>
             
+            <div className="border-t border-gray-600 pt-4 mb-4">
+              <div className="flex items-start space-x-2 sm:space-x-3 mb-3">
+                <div className="text-red-400 mt-0.5 flex-shrink-0">
+                  <svg className="w-4 h-4 sm:w-5 sm:h-5" fill="currentColor" viewBox="0 0 24 24">
+                    <path d="M12 2C6.48 2 2 6.48 2 12s4.48 10 10 10 10-4.48 10-10S17.52 2 12 2zm-2 15l-5-5 1.41-1.41L10 14.17l7.59-7.59L19 8l-9 9z"/>
+                  </svg>
+                </div>
+                <div className="min-w-0 flex-1">
+                  <h5 className="text-red-400 font-semibold mb-1 text-sm sm:text-base">Demo Build Warning</h5>
+                  <p className="text-gray-400 text-xs sm:text-sm">
+                    This is a demo build for testing purposes only. <strong>Do not claim real Pulse tokens.</strong> 
+                    This application is for demonstration and educational purposes.
+                  </p>
+                </div>
+              </div>
+            </div>
+            
             <div className="border-t border-gray-600 pt-4">
               <h5 className="text-white font-semibold mb-3 text-sm">Terms of Service</h5>
               <div className="text-left text-xs text-gray-400 mb-4 max-h-32 overflow-y-auto">
