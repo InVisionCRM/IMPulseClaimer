@@ -9,6 +9,9 @@ import BalanceDisplay from '@/components/BalanceDisplay'
 import DividendsCard from '@/components/DividendsCard'
 import Modal from '@/components/Modal'
 import Networks from '@/components/Networks'
+import TimeEarningsEstimator from '@/components/TimeEarningsEstimator'
+import Stats from '@/components/Stats'
+import ContractAddresses from '@/components/ContractAddresses'
 import { TimeIcon } from '@/components/icons/CurrencyIcons'
 import { networks, Network } from '@/data/networks'
 import { 
@@ -20,6 +23,7 @@ import {
   isMoralisInitialized, 
   isValidChain 
 } from '@/lib/moralis'
+import { useDividends, useDividendTransactions } from '@/hooks/useDividends'
 
 export default function HomePage(): React.JSX.Element {
   const [isErrorModalOpen, setIsErrorModalOpen] = useState<boolean>(false)
@@ -27,7 +31,6 @@ export default function HomePage(): React.JSX.Element {
   const [activeView, setActiveView] = useState<string>('network')
   const [timeBalance, setTimeBalance] = useState<TokenBalance | null>(null)
   const [isLoadingBalance, setIsLoadingBalance] = useState<boolean>(false)
-  const [isLoadingDividends, setIsLoadingDividends] = useState<boolean>(false)
 
   // Wagmi hooks
   const { address, isConnected } = useAccount()
@@ -37,19 +40,27 @@ export default function HomePage(): React.JSX.Element {
   const initialNetwork = networks.find(n => n.config.chainId === 1) || networks[0]
   const [currentNetwork, setCurrentNetwork] = useState<Network>(initialNetwork)
   
+  // Dividend hooks - moved after currentNetwork is defined
+  const { dividendData, displayData, isLoading: isLoadingDividends, error: dividendError, refetch: refetchDividends } = useDividends(currentNetwork.id)
+  const { claimDividends, sweepDividends, isClaiming, isSweeping, transactionError, lastTransactionHash, clearError } = useDividendTransactions(currentNetwork.id)
+  
   // Initialize Moralis on component mount
   useEffect(() => {
     const initMoralis = async () => {
-      const apiKey = process.env.NEXT_PUBLIC_MORALIS_API_KEY
+      const apiKey = process.env.MORALIS_API_KEY
+      console.log('🔑 Checking Moralis API key...')
       if (!apiKey) {
-        console.warn('Moralis API key not found. Please set NEXT_PUBLIC_MORALIS_API_KEY in your environment variables.')
+        console.warn('❌ Moralis API key not found. Please set MORALIS_API_KEY in your environment variables.')
         return
       }
+      console.log('✅ Moralis API key found:', apiKey.substring(0, 20) + '...')
       
       try {
+        console.log('🚀 Initializing Moralis...')
         await initializeMoralis(apiKey)
+        console.log('✅ Moralis initialized successfully')
       } catch (error) {
-        console.error('Failed to initialize Moralis:', error)
+        console.error('❌ Failed to initialize Moralis:', error)
         setModalMessage('Failed to initialize blockchain data service. Please check your configuration.')
         setIsErrorModalOpen(true)
       }
@@ -89,7 +100,7 @@ export default function HomePage(): React.JSX.Element {
       }
 
       // Validate chain parameter
-      if (!isValidChain('pulse')) {
+      if (!isValidChain('369')) {
         console.error('Invalid chain parameter for Moralis')
         return
       }
@@ -98,7 +109,7 @@ export default function HomePage(): React.JSX.Element {
       try {
         const balance = await getTimeTokenBalance(
           address,
-          'pulse',
+          '369',
           currentNetwork.config.timeTokenAddress
         )
         setTimeBalance(balance)
@@ -151,16 +162,64 @@ export default function HomePage(): React.JSX.Element {
     }
   }
 
-  const handleAttempt = (action: 'Claim' | 'Sweep') => {
+  const handleClaim = async () => {
     if (!isConnected) {
       setModalMessage('Please connect your wallet first.')
       setIsErrorModalOpen(true)
       return
     }
     
-    // Show message that dividend contract integration is needed
-    setModalMessage(`${action} functionality requires dividend contract integration. This feature is coming soon.`)
-    setIsErrorModalOpen(true)
+    try {
+      await claimDividends()
+      if (transactionError) {
+        setModalMessage(transactionError)
+        setIsErrorModalOpen(true)
+        clearError()
+      } else {
+        // Success - show success message with transaction hash and refetch data
+        const successMessage = lastTransactionHash 
+          ? `Dividends claimed successfully! Transaction: ${lastTransactionHash.slice(0, 10)}...${lastTransactionHash.slice(-8)}`
+          : 'Dividends claimed successfully! Your balance has been updated.'
+        setModalMessage(successMessage)
+        setIsErrorModalOpen(true)
+        // Refetch dividend data after successful claim
+        await refetchDividends()
+      }
+    } catch (error) {
+      console.error('Error claiming dividends:', error)
+      setModalMessage('Failed to claim dividends. Please try again.')
+      setIsErrorModalOpen(true)
+    }
+  }
+
+  const handleSweep = async () => {
+    if (!isConnected) {
+      setModalMessage('Please connect your wallet first.')
+      setIsErrorModalOpen(true)
+      return
+    }
+    
+    try {
+      await sweepDividends()
+      if (transactionError) {
+        setModalMessage(transactionError)
+        setIsErrorModalOpen(true)
+        clearError()
+      } else {
+        // Success - show success message with transaction hash and refetch data
+        const successMessage = lastTransactionHash 
+          ? `Dividends swept successfully! Transaction: ${lastTransactionHash.slice(0, 10)}...${lastTransactionHash.slice(-8)}`
+          : 'Dividends swept successfully! New dividends are now available to claim.'
+        setModalMessage(successMessage)
+        setIsErrorModalOpen(true)
+        // Refetch dividend data after successful sweep
+        await refetchDividends()
+      }
+    } catch (error) {
+      console.error('Error sweeping dividends:', error)
+      setModalMessage('Failed to sweep dividends. Please try again.')
+      setIsErrorModalOpen(true)
+    }
   }
 
   // Format TIME balance display - only show real data
@@ -179,14 +238,24 @@ export default function HomePage(): React.JSX.Element {
     return { amount: formattedBalance, value: formattedValue }
   }
 
-  // Get dividend display - only show real data or loading state
+  // Get dividend display - show real data from contract
   const getDividendDisplay = () => {
     if (isLoadingDividends) {
       return { amount: 'Loading...', value: 'Loading...' }
     }
     
-    // No dividend contract integration yet, so show "Coming Soon"
-    return { amount: 'Coming Soon', value: 'Coming Soon' }
+    if (dividendError) {
+      return { amount: 'Error', value: 'Error' }
+    }
+    
+    if (!displayData.hasDividends) {
+      return { amount: '0', value: '$0.00' }
+    }
+    
+    return { 
+      amount: displayData.claimableAmount, 
+      value: `$${parseFloat(displayData.claimableAmount).toFixed(2)}` 
+    }
   }
 
   const timeBalanceDisplay = getTimeBalanceDisplay()
@@ -202,6 +271,23 @@ export default function HomePage(): React.JSX.Element {
           <appkit-button />
         </div>
         {activeView === 'network' && <Networks onConfirm={handleNetworkSelection} currentNetworkId={currentNetwork.id} />}
+        {activeView === 'estimator' && (
+          <div className="w-full max-w-4xl">
+            <TimeEarningsEstimator 
+              currentAddress={address} 
+            />
+          </div>
+        )}
+        {activeView === 'stats' && (
+          <div className="w-full h-full">
+            <Stats />
+          </div>
+        )}
+        {activeView === 'contracts' && (
+          <div className="w-full max-w-6xl">
+            <ContractAddresses />
+          </div>
+        )}
         {activeView === 'dividends' && (
           <div className="w-full max-w-4xl">
             <Header network={currentNetwork} />
@@ -228,10 +314,12 @@ export default function HomePage(): React.JSX.Element {
             </div>
             <div className="mt-8">
               <DividendsCard
-                onClaim={() => handleAttempt('Claim')}
-                onSweep={() => handleAttempt('Sweep')}
+                onClaim={handleClaim}
+                onSweep={handleSweep}
                 network={currentNetwork}
-                isLoading={isLoadingDividends}
+                isLoading={isLoadingDividends || isClaiming || isSweeping}
+                dividendData={dividendData}
+                displayData={displayData}
               />
             </div>
             <div className="text-center mt-8">

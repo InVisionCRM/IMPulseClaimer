@@ -74,13 +74,21 @@ const Networks: React.FC<NetworksProps> = ({ currentNetworkId, onConfirm }) => {
             aria-pressed={selectedForConfirmation === network.id}
             aria-label={`Select ${network.name} network`}
           >
-            <button
+            <div
                 onClick={(e) => handleOpenConfig(network, e)}
-                className="absolute top-2 right-2 p-1.5 rounded-full bg-gray-800/60 text-gray-400 hover:bg-gray-700 hover:text-white transition-colors opacity-0 group-hover:opacity-100 focus:opacity-100 z-10"
+                className="absolute top-2 right-2 p-1.5 rounded-full bg-gray-800/60 text-gray-400 hover:bg-gray-700 hover:text-white transition-colors opacity-0 group-hover:opacity-100 focus:opacity-100 z-10 cursor-pointer"
                 aria-label={`View ${network.name} configuration`}
+                role="button"
+                tabIndex={0}
+                onKeyDown={(e) => {
+                  if (e.key === 'Enter' || e.key === ' ') {
+                    e.preventDefault();
+                    handleOpenConfig(network, e as any);
+                  }
+                }}
             >
                 <SettingsIcon className="w-4 h-4" />
-            </button>
+            </div>
             <div className="h-12 w-12 flex items-center justify-center mb-3">
               {React.createElement(network.icon, { size: 48 })}
             </div>

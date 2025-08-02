@@ -6,6 +6,9 @@ import {
   DividendsIcon,
   SettingsIcon,
   ExpandIcon,
+  CalculatorIcon,
+  StatsIcon,
+  ContractIcon,
 } from './icons/NavIcons'
 
 interface SidebarItemProps {
@@ -63,6 +66,24 @@ const Sidebar: React.FC<SidebarProps> = ({ activeView, onNavigate }) => {
           label="Dividends"
           active={activeView === 'dividends'}
           onClick={() => onNavigate('dividends')}
+        />
+        <SidebarItem
+          icon={<CalculatorIcon className="w-6 h-6" />}
+          label="Estimator"
+          active={activeView === 'estimator'}
+          onClick={() => onNavigate('estimator')}
+        />
+        <SidebarItem
+          icon={<StatsIcon className="w-6 h-6" />}
+          label="Stats"
+          active={activeView === 'stats'}
+          onClick={() => onNavigate('stats')}
+        />
+        <SidebarItem
+          icon={<ContractIcon className="w-6 h-6" />}
+          label="Contracts"
+          active={activeView === 'contracts'}
+          onClick={() => onNavigate('contracts')}
         />
       </div>
 

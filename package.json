@@ -38,5 +38,21 @@
     "tailwindcss": "^3.4.0",
     "ts-jest": "^29.4.0",
     "typescript": "~5.8.2"
+  },
+  "resolutions": {
+    "lit": "^3.3.0",
+    "@reown/appkit": "^1.7.17",
+    "@reown/appkit-adapter-wagmi": "^1.7.17",
+    "@reown/appkit-ui": "^1.7.17",
+    "@reown/appkit-pay": "^1.7.17",
+    "@reown/appkit-scaffold-ui": "^1.7.17",
+    "@reown/appkit-siwx": "^1.7.17"
+  },
+  "overrides": {
+    "@reown/appkit": "^1.7.17",
+    "@reown/appkit-ui": "^1.7.17",
+    "@reown/appkit-pay": "^1.7.17",
+    "@reown/appkit-scaffold-ui": "^1.7.17",
+    "@reown/appkit-siwx": "^1.7.17"
   }
 }

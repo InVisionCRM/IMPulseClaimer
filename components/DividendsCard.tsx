@@ -4,12 +4,21 @@ import Tooltip from './Tooltip'
 import { HelpIcon } from './icons/NavIcons'
 import { Network } from '@/data/networks'
 import { IconProps } from './icons/CurrencyIcons'
+import { type DividendData } from '@/lib/timeContract'
 
 interface DividendsCardProps {
   onClaim: () => void;
   onSweep: () => void;
   network: Network;
   isLoading?: boolean;
+  dividendData?: DividendData | null;
+  displayData?: {
+    claimableAmount: string;
+    totalClaimed: string;
+    timeBalance: string;
+    hasDividends: boolean;
+    hasTokens: boolean;
+  };
 }
 
 const DividendRow: React.FC<{
@@ -36,7 +45,14 @@ const DividendRow: React.FC<{
   </div>
 );
 
-const DividendsCard: React.FC<DividendsCardProps> = ({ onClaim, onSweep, network, isLoading = false }) => {
+const DividendsCard: React.FC<DividendsCardProps> = ({ 
+  onClaim, 
+  onSweep, 
+  network, 
+  isLoading = false,
+  dividendData,
+  displayData
+}) => {
   const sweepTooltip = "By sweeping, all dividends that have accrued are brought into the TIME smart contract and made available to claim. This is an optional transaction, as when one person sweeps, dividends are distributed for everyone.";
   const claimTooltip = "By claiming, you are transferring all earned dividends to your account holding TIME.";
 
@@ -45,25 +61,25 @@ const DividendsCard: React.FC<DividendsCardProps> = ({ onClaim, onSweep, network
       <div className="divide-y divide-gray-700">
         <DividendRow 
           label="Total Dividends Claimed" 
-          amount="Coming Soon" 
-          value="Coming Soon" 
+          amount={displayData?.totalClaimed || '0'} 
+          value={displayData?.totalClaimed ? `$${parseFloat(displayData.totalClaimed).toFixed(2)}` : '$0.00'} 
           symbol={network.config.symbol} 
           icon={network.icon}
           isLoading={isLoading}
         />
         <DividendRow 
           label="Claimable Dividends" 
-          amount="Coming Soon" 
-          value="Coming Soon" 
+          amount={displayData?.claimableAmount || '0'} 
+          value={displayData?.claimableAmount ? `$${parseFloat(displayData.claimableAmount).toFixed(2)}` : '$0.00'} 
           symbol={network.config.symbol} 
           icon={network.icon}
           isLoading={isLoading}
         />
         <DividendRow 
-          label="Sweepable Dividends" 
-          amount="Coming Soon" 
-          value="Coming Soon" 
-          symbol={network.config.symbol} 
+          label="TIME Balance" 
+          amount={displayData?.timeBalance || '0'} 
+          value={displayData?.timeBalance ? `$${parseFloat(displayData.timeBalance).toFixed(2)}` : '$0.00'} 
+          symbol="TIME" 
           icon={network.icon}
           isLoading={isLoading}
         />
@@ -72,14 +88,14 @@ const DividendsCard: React.FC<DividendsCardProps> = ({ onClaim, onSweep, network
         <div className="relative flex items-center justify-center">
           <button
             onClick={onSweep}
-            disabled={isLoading}
+            disabled={isLoading || !displayData?.hasTokens}
             className={`w-full font-bold py-4 rounded-full transition-all duration-300 ease-in-out focus:outline-none focus:ring-2 focus:ring-amber-400 focus:ring-opacity-75 ${
-              isLoading 
+              isLoading || !displayData?.hasTokens
                 ? 'bg-gray-600 text-gray-400 cursor-not-allowed' 
                 : 'bg-amber-500 hover:bg-amber-600 text-black'
             }`}
           >
-            {isLoading ? 'Loading...' : 'Sweep Dividends'}
+            {isLoading ? 'Loading...' : !displayData?.hasTokens ? 'No TIME Tokens' : 'Sweep Dividends'}
           </button>
           <div className="absolute -right-2 sm:-right-4">
             <Tooltip text={sweepTooltip} position="top">
@@ -90,14 +106,14 @@ const DividendsCard: React.FC<DividendsCardProps> = ({ onClaim, onSweep, network
         <div className="relative flex items-center justify-center">
           <button
             onClick={onClaim}
-            disabled={isLoading}
+            disabled={isLoading || !displayData?.hasDividends}
             className={`w-full font-bold py-4 rounded-full transition-all duration-300 ease-in-out focus:outline-none focus:ring-2 focus:ring-amber-400 focus:ring-opacity-75 ${
-              isLoading 
+              isLoading || !displayData?.hasDividends
                 ? 'bg-gray-600 text-gray-400 cursor-not-allowed' 
                 : 'bg-amber-500 hover:bg-amber-600 text-black'
             }`}
           >
-            {isLoading ? 'Loading...' : 'Claim Dividends'}
+            {isLoading ? 'Loading...' : !displayData?.hasDividends ? 'No Dividends' : 'Claim Dividends'}
           </button>
           <div className="absolute -right-2 sm:-right-4">
             <Tooltip text={claimTooltip} position="top">
