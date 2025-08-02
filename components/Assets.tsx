@@ -73,7 +73,7 @@ const Assets: React.FC<AssetsProps> = ({ currentNetwork }) => {
                 symbol: 'TIME',
                 name: 'TIME Token',
                 balance: formatTokenBalance(timeBalance.balance, timeBalance.decimals),
-                value: formatUSDValue(timeBalance.usdValue),
+                value: formatUSDValue(timeBalance.usd_value),
                 icon: <TimeTokenDisplay size={32} />,
                 isLoading: false
               })

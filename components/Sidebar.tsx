@@ -113,8 +113,6 @@ const Sidebar: React.FC<SidebarProps> = ({ activeView, onNavigate }) => {
 
       {/* Mobile Bottom Navbar */}
       <div className="sm:hidden fixed bottom-0 left-0 right-0 bg-[#1C1C1C] border-t border-gray-700 z-50 shadow-lg" style={{ minHeight: '80px' }}>
-        {/* Debug indicator - remove this later */}
-        <div className="absolute top-0 left-0 bg-red-500 text-white text-xs px-1">MOBILE NAV</div>
         <div className="flex justify-around items-center py-3 px-2">
           <SidebarItem
             icon={<NetworkIcon className="w-5 h-5" />}
