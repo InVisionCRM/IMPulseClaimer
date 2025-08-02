@@ -62,7 +62,7 @@ const DividendsCard: React.FC<DividendsCardProps> = ({
         <DividendRow 
           label="Total Dividends Claimed" 
           amount={displayData?.totalClaimed || '0'} 
-          value={displayData?.totalClaimed ? `$${parseFloat(displayData.totalClaimed).toFixed(2)}` : '$0.00'} 
+          value="" 
           symbol={network.config.symbol} 
           icon={network.icon}
           isLoading={isLoading}
