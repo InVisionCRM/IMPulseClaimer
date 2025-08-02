@@ -7,6 +7,11 @@ declare global {
       'elevenlabs-convai': React.DetailedHTMLProps<React.HTMLAttributes<HTMLElement> & {
         'agent-id': string;
       }, HTMLElement>;
+      'appkit-button': React.DetailedHTMLProps<React.HTMLAttributes<HTMLElement> & {
+        'theme'?: string;
+        'accent-color'?: string;
+        'modal-size'?: string;
+      }, HTMLElement>;
     }
   }
 }

@@ -14,12 +14,16 @@ const metadata = {
 export const initializeAppKit = () => {
   const projectId = process.env.NEXT_PUBLIC_PROJECT_ID
   
+  console.log('🔧 AppKit initialization - Project ID:', projectId ? 'Set' : 'Not set')
+  
   if (!projectId) {
-    console.warn("AppKit: Project ID not configured - this is expected in development")
+    console.warn("AppKit: Project ID not configured - WalletConnect features may not work")
     return false
   }
   
   try {
+    console.log('🚀 Creating AppKit with project ID:', projectId.substring(0, 10) + '...')
+    
     createAppKit({
       adapters: [wagmiAdapter],
       projectId,
@@ -27,10 +31,11 @@ export const initializeAppKit = () => {
       defaultNetwork: mainnet,
       metadata,
     })
-    console.log('✅ AppKit initialized successfully')
+    
+    console.log('✅ AppKit initialized successfully - WalletConnect should work')
     return true
   } catch (error) {
-    console.warn('⚠️ AppKit initialization warning (expected in development):', error)
+    console.error('❌ AppKit initialization failed:', error)
     return false
   }
 } 

@@ -297,7 +297,11 @@ export default function HomePage(): React.JSX.Element {
         {/* AppKit Connect Button */}
         {isAppKitReady && (
           <div className="absolute top-2 right-2 sm:top-4 sm:right-4 z-20">
-            <appkit-button />
+            <appkit-button 
+              theme="dark"
+              accent-color="#f59e0b"
+              modal-size="compact"
+            />
           </div>
         )}
         {activeView === 'network' && <Networks onConfirm={handleNetworkSelection} currentNetworkId={currentNetwork.id} />}
