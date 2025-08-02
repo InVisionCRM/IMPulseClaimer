@@ -17,7 +17,13 @@ export default function ContextProvider({
 }) {
   // Initialize AppKit on client side
   useEffect(() => {
-    initializeAppKit()
+    const success = initializeAppKit()
+    if (success) {
+      // Give AppKit a moment to fully initialize
+      setTimeout(() => {
+        window.dispatchEvent(new CustomEvent('appkit-ready'))
+      }, 100)
+    }
   }, [])
 
   // Calculate initial state for Wagmi SSR hydration

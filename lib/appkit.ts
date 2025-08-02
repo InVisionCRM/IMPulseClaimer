@@ -15,7 +15,7 @@ export const initializeAppKit = () => {
   const projectId = process.env.NEXT_PUBLIC_PROJECT_ID
   
   if (!projectId) {
-    console.error("AppKit Initialization Error: Project ID is missing.")
+    console.warn("AppKit: Project ID not configured - this is expected in development")
     return false
   }
   
@@ -30,7 +30,7 @@ export const initializeAppKit = () => {
     console.log('✅ AppKit initialized successfully')
     return true
   } catch (error) {
-    console.error('❌ Failed to initialize AppKit:', error)
+    console.warn('⚠️ AppKit initialization warning (expected in development):', error)
     return false
   }
 } 

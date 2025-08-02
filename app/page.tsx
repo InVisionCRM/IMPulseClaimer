@@ -39,9 +39,23 @@ export default function HomePage(): React.JSX.Element {
   useEffect(() => {
     console.log('🔍 Debug - showSplash:', showSplash, 'activeView:', activeView)
   }, [showSplash, activeView])
+
+  // Listen for AppKit ready event
+  useEffect(() => {
+    const handleAppKitReady = () => {
+      setIsAppKitReady(true)
+    }
+    
+    window.addEventListener('appkit-ready', handleAppKitReady)
+    
+    return () => {
+      window.removeEventListener('appkit-ready', handleAppKitReady)
+    }
+  }, [])
   const [timeBalance, setTimeBalance] = useState<TokenBalance | null>(null)
   const [isLoadingBalance, setIsLoadingBalance] = useState<boolean>(false)
   const [isTestTransactionOpen, setIsTestTransactionOpen] = useState<boolean>(false)
+  const [isAppKitReady, setIsAppKitReady] = useState<boolean>(false)
 
   // Wagmi hooks
   const { address, isConnected } = useAccount()
@@ -281,9 +295,11 @@ export default function HomePage(): React.JSX.Element {
       <Sidebar activeView={activeView} onNavigate={setActiveView} />
       <main className="flex-1 p-2 sm:p-4 lg:p-6 pb-24 sm:pb-6 flex justify-center items-start relative">
         {/* AppKit Connect Button */}
-        <div className="absolute top-2 right-2 sm:top-4 sm:right-4 z-20">
-          <appkit-button />
-        </div>
+        {isAppKitReady && (
+          <div className="absolute top-2 right-2 sm:top-4 sm:right-4 z-20">
+            <appkit-button />
+          </div>
+        )}
         {activeView === 'network' && <Networks onConfirm={handleNetworkSelection} currentNetworkId={currentNetwork.id} />}
         {!showSplash && activeView !== 'network' && activeView !== 'wallet' && activeView !== 'estimator' && activeView !== 'stats' && activeView !== 'contracts' && activeView !== 'test' && activeView !== 'dividends' && (
           <div className="w-full max-w-4xl">
