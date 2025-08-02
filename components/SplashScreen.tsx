@@ -35,7 +35,7 @@ const SplashScreen: React.FC<SplashScreenProps> = ({ onComplete }) => {
       clearTimeout(timer1)
       clearTimeout(timer2)
     }
-  }, [onComplete])
+  }, [])
 
   // Handle terms acceptance
   useEffect(() => {
