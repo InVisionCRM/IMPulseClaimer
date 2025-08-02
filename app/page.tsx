@@ -34,6 +34,11 @@ export default function HomePage(): React.JSX.Element {
   const [modalMessage, setModalMessage] = useState<string>('')
   const [activeView, setActiveView] = useState<string>('network')
   const [showSplash, setShowSplash] = useState<boolean>(true)
+  
+  // Debug logging
+  useEffect(() => {
+    console.log('🔍 Debug - showSplash:', showSplash, 'activeView:', activeView)
+  }, [showSplash, activeView])
   const [timeBalance, setTimeBalance] = useState<TokenBalance | null>(null)
   const [isLoadingBalance, setIsLoadingBalance] = useState<boolean>(false)
   const [isTestTransactionOpen, setIsTestTransactionOpen] = useState<boolean>(false)
@@ -280,6 +285,20 @@ export default function HomePage(): React.JSX.Element {
           <appkit-button />
         </div>
         {activeView === 'network' && <Networks onConfirm={handleNetworkSelection} currentNetworkId={currentNetwork.id} />}
+        {!showSplash && activeView !== 'network' && activeView !== 'wallet' && activeView !== 'estimator' && activeView !== 'stats' && activeView !== 'contracts' && activeView !== 'test' && activeView !== 'dividends' && (
+          <div className="w-full max-w-4xl">
+            <div className="bg-[#1C1C1C] rounded-2xl p-6 text-center">
+              <h2 className="text-2xl font-bold text-white mb-4">Welcome to TIME Dividends</h2>
+              <p className="text-gray-400 mb-6">Select a view from the sidebar to get started</p>
+              <div className="text-amber-400">
+                <svg className="w-16 h-16 mx-auto mb-4" fill="currentColor" viewBox="0 0 24 24">
+                  <path d="M12 2C6.48 2 2 6.48 2 12s4.48 10 10 10 10-4.48 10-10S17.52 2 12 2zm-2 15l-5-5 1.41-1.41L10 14.17l7.59-7.59L19 8l-9 9z"/>
+                </svg>
+                <p>Choose your destination</p>
+              </div>
+            </div>
+          </div>
+        )}
         {activeView === 'wallet' && (
           <div className="w-full max-w-4xl">
             <Assets currentNetwork={currentNetwork} />
