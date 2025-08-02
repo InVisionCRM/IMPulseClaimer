@@ -1,8 +1,9 @@
 import React, { useState, useEffect, useMemo } from 'react'
 import { Network, networks } from '@/data/networks'
-import { TimeIcon } from './icons/CurrencyIcons'
+import TimeTokenDisplay from './TimeTokenDisplay'
 import { getTimeTokenPrice } from '@/lib/moralis'
 import { formatTokenBalance, formatUSDValue } from '@/lib/moralis'
+import NetworkDrawer from './NetworkDrawer'
 
 interface TimeEarningsEstimatorProps {
   currentAddress?: string;
@@ -61,6 +62,7 @@ const TimeEarningsEstimator: React.FC<TimeEarningsEstimatorProps> = ({
   const [timePrices, setTimePrices] = useState<{ [networkId: string]: number | null }>({})
   const [isLoadingPrices, setIsLoadingPrices] = useState(false)
   const [priceErrors, setPriceErrors] = useState<{ [networkId: string]: string | null }>({})
+  const [isDrawerOpen, setIsDrawerOpen] = useState(false)
 
   // Get fee rate for selected network
   const feeRate = FEE_RATES[selectedNetwork.id as keyof typeof FEE_RATES] || 0.0001
@@ -174,7 +176,7 @@ const TimeEarningsEstimator: React.FC<TimeEarningsEstimatorProps> = ({
   return (
     <div className="bg-[#1C1C1C] rounded-2xl p-6">
       <div className="flex items-center gap-3 mb-6">
-        <TimeIcon size={32} />
+        <TimeTokenDisplay size={32} />
         <h2 className="text-2xl font-bold text-white">TIME Earnings Estimator</h2>
       </div>
 
@@ -183,19 +185,51 @@ const TimeEarningsEstimator: React.FC<TimeEarningsEstimatorProps> = ({
         <label className="block text-sm font-medium text-gray-300 mb-3">
           Select Network for Estimation
         </label>
-        <div className="grid grid-cols-2 sm:grid-cols-3 md:grid-cols-4 gap-3">
+        
+        {/* Mobile: Simple Network Button */}
+        <div className="block sm:hidden">
+          <button
+            onClick={() => setIsDrawerOpen(true)}
+            className="w-full bg-[#131313] border border-gray-700 rounded-lg p-4 flex items-center justify-between hover:border-amber-400 transition-colors"
+          >
+            <div className="flex items-center space-x-3">
+              {React.createElement(selectedNetwork.icon, { size: 24, className: "w-6 h-6" })}
+              <span className="text-white font-medium">{selectedNetwork.name}</span>
+            </div>
+                         <div className="text-right">
+               <span className="text-xs text-gray-400 block">Price</span>
+              {isLoadingPrices ? (
+                <span className="text-xs text-gray-500">Loading...</span>
+              ) : timePrices[selectedNetwork.id] ? (
+                <span className="text-xs text-amber-400">
+                  {selectedNetwork.id === 'arbitrum' || selectedNetwork.id === 'avalanche' || selectedNetwork.id === 'base' 
+                    ? `$${timePrices[selectedNetwork.id]!.toFixed(10)}`
+                    : `$${timePrices[selectedNetwork.id]!.toFixed(5)}`
+                  }
+                </span>
+              ) : (
+                <span className="text-xs text-gray-500">No price</span>
+              )}
+            </div>
+          </button>
+        </div>
+
+        {/* Desktop: Grid Layout */}
+        <div className="hidden sm:grid sm:grid-cols-3 md:grid-cols-4 gap-3">
           {networks.map((network) => (
             <button
               key={network.id}
               onClick={() => setSelectedNetwork(network)}
               className={`
                 relative bg-[#131313] rounded-lg p-3 flex flex-col items-center justify-center 
-                border-2 transition-all duration-200 ease-in-out
+                border-2 transition-all duration-300 ease-in-out
                 transform hover:-translate-y-1 hover:shadow-lg
                 focus:outline-none focus:ring-2 focus:ring-offset-2 focus:ring-offset-[#1C1C1C] focus:ring-amber-500
+                before:absolute before:inset-0 before:rounded-lg before:border-2 before:border-transparent before:transition-all before:duration-300
+                hover:before:border-white hover:before:shadow-[0_0_10px_rgba(255,255,255,0.5)] hover:before:shadow-white/50
                 ${selectedNetwork.id === network.id 
-                  ? 'border-amber-500 shadow-amber-500/20' 
-                  : 'border-transparent hover:border-amber-400'
+                  ? 'border-amber-500 shadow-amber-500/20 before:border-amber-500 before:shadow-amber-500/50' 
+                  : 'border-transparent hover:border-white/30'
                 }
               `}
             >
@@ -240,7 +274,7 @@ const TimeEarningsEstimator: React.FC<TimeEarningsEstimatorProps> = ({
               className="w-full bg-[#131313] border border-gray-700 rounded-lg px-4 py-3 text-white placeholder-gray-500 focus:outline-none focus:ring-2 focus:ring-amber-500 focus:border-transparent"
             />
             <div className="absolute right-3 top-1/2 transform -translate-y-1/2">
-              <TimeIcon size={20} />
+              <TimeTokenDisplay size={20} />
             </div>
           </div>
           {timePrices[selectedNetwork.id] && (
@@ -402,6 +436,14 @@ const TimeEarningsEstimator: React.FC<TimeEarningsEstimatorProps> = ({
           Note: This estimation is independent of your wallet's current network
         </p>
       </div>
+
+      {/* Network Drawer for Mobile */}
+      <NetworkDrawer
+        isOpen={isDrawerOpen}
+        onClose={() => setIsDrawerOpen(false)}
+        selectedNetwork={selectedNetwork}
+        onNetworkSelect={setSelectedNetwork}
+      />
     </div>
   )
 }

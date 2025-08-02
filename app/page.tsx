@@ -12,7 +12,11 @@ import Networks from '@/components/Networks'
 import TimeEarningsEstimator from '@/components/TimeEarningsEstimator'
 import Stats from '@/components/Stats'
 import ContractAddresses from '@/components/ContractAddresses'
-import { TimeIcon } from '@/components/icons/CurrencyIcons'
+import Assets from '@/components/Assets'
+import TimeTokenDisplay from '@/components/TimeTokenDisplay'
+import SplashScreen from '@/components/SplashScreen'
+import ElevenLabsWidget from '@/components/ElevenLabsWidget'
+import TestTransaction from '@/components/TestTransaction'
 import { networks, Network } from '@/data/networks'
 import { 
   initializeMoralis, 
@@ -29,8 +33,10 @@ export default function HomePage(): React.JSX.Element {
   const [isErrorModalOpen, setIsErrorModalOpen] = useState<boolean>(false)
   const [modalMessage, setModalMessage] = useState<string>('')
   const [activeView, setActiveView] = useState<string>('network')
+  const [showSplash, setShowSplash] = useState<boolean>(true)
   const [timeBalance, setTimeBalance] = useState<TokenBalance | null>(null)
   const [isLoadingBalance, setIsLoadingBalance] = useState<boolean>(false)
+  const [isTestTransactionOpen, setIsTestTransactionOpen] = useState<boolean>(false)
 
   // Wagmi hooks
   const { address, isConnected } = useAccount()
@@ -264,13 +270,21 @@ export default function HomePage(): React.JSX.Element {
   
   return (
     <div className="flex min-h-screen font-sans bg-[#131313] text-white">
+      {showSplash && (
+        <SplashScreen onComplete={() => setShowSplash(false)} />
+      )}
       <Sidebar activeView={activeView} onNavigate={setActiveView} />
-      <main className="flex-1 p-4 sm:p-6 lg:p-8 flex justify-center items-start">
+      <main className="flex-1 p-2 sm:p-4 lg:p-6 pb-24 sm:pb-6 flex justify-center items-start relative">
         {/* AppKit Connect Button */}
-        <div className="absolute top-4 right-4 z-10">
+        <div className="absolute top-2 right-2 sm:top-4 sm:right-4 z-20">
           <appkit-button />
         </div>
         {activeView === 'network' && <Networks onConfirm={handleNetworkSelection} currentNetworkId={currentNetwork.id} />}
+        {activeView === 'wallet' && (
+          <div className="w-full max-w-4xl">
+            <Assets currentNetwork={currentNetwork} />
+          </div>
+        )}
         {activeView === 'estimator' && (
           <div className="w-full max-w-4xl">
             <TimeEarningsEstimator 
@@ -288,6 +302,22 @@ export default function HomePage(): React.JSX.Element {
             <ContractAddresses />
           </div>
         )}
+        {activeView === 'test' && (
+          <div className="w-full max-w-4xl">
+            <div className="bg-[#1C1C1C] rounded-2xl p-6">
+              <div className="text-center">
+                <h2 className="text-2xl font-bold text-white mb-4">Test Transaction</h2>
+                <p className="text-gray-400 mb-6">Verify your wallet connection with a small test transaction</p>
+                <button
+                  onClick={() => setIsTestTransactionOpen(true)}
+                  className="bg-amber-500 hover:bg-amber-600 text-black font-bold py-3 px-8 rounded-full transition-colors focus:outline-none focus:ring-2 focus:ring-amber-400 focus:ring-opacity-75"
+                >
+                  Start Test Transaction
+                </button>
+              </div>
+            </div>
+          </div>
+        )}
         {activeView === 'dividends' && (
           <div className="w-full max-w-4xl">
             <Header network={currentNetwork} />
@@ -299,7 +329,7 @@ export default function HomePage(): React.JSX.Element {
                 title="TIME Balance"
                 amount={timeBalanceDisplay.amount}
                 value={timeBalanceDisplay.value}
-                icon={<TimeIcon />}
+                icon={<TimeTokenDisplay />}
                 tooltipText="This is your current balance of TIME tokens."
                 isLoading={isLoadingBalance}
               />
@@ -343,6 +373,15 @@ export default function HomePage(): React.JSX.Element {
           </button>
         </div>
       </Modal>
+
+      {/* ElevenLabs Convai Widget */}
+      <ElevenLabsWidget />
+
+      {/* Test Transaction Modal */}
+      <TestTransaction 
+        isOpen={isTestTransactionOpen} 
+        onClose={() => setIsTestTransactionOpen(false)} 
+      />
     </div>
   )
 } 

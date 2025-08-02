@@ -17,6 +17,9 @@ export default async function RootLayout({ children }: { children: React.ReactNo
 
   return (
     <html lang="en">
+      <head>
+        <script src="https://unpkg.com/@elevenlabs/convai-widget-embed" async type="text/javascript"></script>
+      </head>
       <body className="font-sans">
         {/* Wrap children with ContextProvider, passing cookies */}
         <ContextProvider cookies={cookies}>{children}</ContextProvider>

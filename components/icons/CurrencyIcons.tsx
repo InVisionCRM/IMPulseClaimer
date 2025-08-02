@@ -76,9 +76,4 @@ export const BaseIcon: React.FC<IconProps> = ({ size = 24, className = '' }) => 
   />
 );
 
-export const TimeIcon: React.FC<IconProps> = ({ size = 24, className = '' }) => (
-  <svg width={size} height={size} viewBox="0 0 24 24" fill="none" className={className}>
-    <circle cx="12" cy="12" r="10" fill="#F59E0B"/>
-    <path d="M12 6V12L16 14" stroke="white" strokeWidth="2" fill="none"/>
-  </svg>
-); 
+ 
