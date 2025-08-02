@@ -1,6 +1,6 @@
 import { useState, useEffect, useCallback } from 'react'
 import { useAccount, usePublicClient, useWalletClient } from 'wagmi'
-import { getDividendData, getDividendDisplayData, claimDividends, sweepDividends, type DividendData } from '@/lib/timeContract'
+import { getDividendData, getDividendDisplayData, claimDividends as claimDividendsContract, sweepDividends as sweepDividendsContract, type DividendData } from '@/lib/timeContract'
 import { isTimeContractDeployed } from '@/contracts/addresses'
 
 interface UseDividendsReturn {
@@ -89,7 +89,7 @@ export const useDividendTransactions = (networkId: string) => {
     setTransactionError(null)
 
     try {
-      const result = await claimDividends({
+      const result = await claimDividendsContract({
         networkId,
         userAddress: address,
         walletClient,
@@ -124,7 +124,7 @@ export const useDividendTransactions = (networkId: string) => {
     setTransactionError(null)
 
     try {
-      const result = await sweepDividends({
+      const result = await sweepDividendsContract({
         networkId,
         userAddress: address,
         walletClient,
