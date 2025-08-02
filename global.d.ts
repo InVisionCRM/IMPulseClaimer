@@ -6,7 +6,17 @@ declare global {
       /**
        * The AppKit button web component. Registered globally by AppKit.
        */
-      'appkit-button': React.DetailedHTMLProps<React.HTMLAttributes<HTMLElement>, HTMLElement>
+      'appkit-button': React.DetailedHTMLProps<React.HTMLAttributes<HTMLElement> & {
+        'theme'?: string;
+        'accent-color'?: string;
+        'modal-size'?: string;
+      }, HTMLElement>;
+      /**
+       * The ElevenLabs Convai widget web component.
+       */
+      'elevenlabs-convai': React.DetailedHTMLProps<React.HTMLAttributes<HTMLElement> & {
+        'agent-id': string;
+      }, HTMLElement>;
     }
   }
 }

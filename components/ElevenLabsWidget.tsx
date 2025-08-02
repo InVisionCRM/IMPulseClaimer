@@ -1,21 +1,5 @@
 import React, { useEffect, useState } from 'react'
 
-// Declare the custom element type for TypeScript
-declare global {
-  namespace JSX {
-    interface IntrinsicElements {
-      'elevenlabs-convai': React.DetailedHTMLProps<React.HTMLAttributes<HTMLElement> & {
-        'agent-id': string;
-      }, HTMLElement>;
-      'appkit-button': React.DetailedHTMLProps<React.HTMLAttributes<HTMLElement> & {
-        'theme'?: string;
-        'accent-color'?: string;
-        'modal-size'?: string;
-      }, HTMLElement>;
-    }
-  }
-}
-
 const ElevenLabsWidget: React.FC = () => {
   const [isOpen, setIsOpen] = useState(false)
 
